@@ -1,3 +1,2 @@
-rootProject.name='ProjectManagement'
-rootProject.name = 'ProjectManagement'
+include 'BackEnd', 'ProjectApp', 'domains'
 

@@ -11,7 +11,7 @@ buildscript {
 }
 
 version "0.1"
-group "projectmanagement"
+group "projectmgmt"
 
 apply plugin:"eclipse"
 apply plugin:"idea"
