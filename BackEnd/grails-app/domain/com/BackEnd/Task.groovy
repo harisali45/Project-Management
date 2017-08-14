@@ -8,16 +8,19 @@ class Task {
     com.BackEnd.User assignedTo
     Date created
     Date updated
-    Integer deleteFlag
+    Integer deleteFlag = 0
+    Project project
 
     static hasMany = [comment: Comment]
     static hasOne = [reportedBy: com.BackEnd.User, assignedTo: com.BackEnd.User]
 
-    static belongsTo = [Project]
+    static belongsTo = [project : Project]
 
     static constraints = {
         title nullable: false
-        created default: new Date()
+        description nullable: true
+        created nullable: true
+        updated nullable: true
     }
 
     static mapping = {

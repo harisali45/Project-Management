@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <asset:stylesheet src="application.css"/>
-    <asset:stylesheet src="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" />
-    <asset:stylesheet src="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+    <asset:stylesheet src="googleapis.css" />
 
     <!-- Bootstrap Core Css -->
     <asset:stylesheet src="bootstrap.css" />
@@ -24,6 +24,8 @@
     <asset:stylesheet src="style.min.css" />
 
     <asset:stylesheet src="all-themes.css"  />
+
+    <asset:stylesheet src="font-awesome.min.css" />
 
     <g:layoutHead/>
 </head>

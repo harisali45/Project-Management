@@ -15,9 +15,9 @@
             </div>
             <div class="body">
                 <ul class="list-group">
-                    <g:each in="${projects}" var="project">
-                    <li class="list-group-item">${project.title}
-                        <a class="btn btn-primary btn-sm" href="${g.createLink(controller:"task", action: "list",params: [project:project.id])}">View Details</a>
+                    <g:each in="${tasks}" var="project">
+                    <li class="list-group-item">${task.title}
+                        %{--<button class="btn btn-primary" onclick="${g.createLink(controller:"task", action: "list",params: [project:project.id])}">View Details</button>--}%
                         <span class="badge bg-pink">0 new</span></li>
                     </g:each>
                 </ul>
