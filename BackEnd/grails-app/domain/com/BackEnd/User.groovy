@@ -5,26 +5,44 @@ class User {
     String username
     String name
     String email
-    Integer userStatus = 1
+    UserStatusEnum userStatus = UserStatusEnum.active
     Integer deleteFlag = 0
-    //Login login = null
+    String password
 
     static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment]
     static mappedBy = [
         reportedBy : 'reportedBy',
         assignedTo : 'assignedTo'
     ]
-    //static hasOne = [login: Login]
 
     static constraints = {
         email email:true, unique: true, nullable: false
-        name nullable: false
-        username nullable:false, unique: true
-        //login nullable: true
+        name validator: { val, obj ->
+            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val))
+                return ["default.required","Name"]
+            return true
+        }
+        username unique: true, validator: { val, obj ->
+            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val))
+                return ["default.required","Username"]
+            return true
+        }
     }
 
     static mapping = {
         userStatus defaultValue : 1
         deleteFlag defaultValue : 0
+    }
+}
+
+public enum UserStatusEnum {
+    initiated (0),
+    active (1),
+    inactive (2)
+
+    Integer status
+
+    UserStatusEnum (Integer status) {
+        this.status = status
     }
 }

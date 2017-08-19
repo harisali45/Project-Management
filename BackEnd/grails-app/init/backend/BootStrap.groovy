@@ -7,7 +7,7 @@ import com.BackEnd.Task
 class BootStrap {
 
     def init = { servletContext ->
-        User haris=new User (username: "haris", name: "Haris",email: "haris@yallacompare.com")
+        User haris=new User (username: "haris", name: "Haris",email: "haris@yallacompare.com", password: "haris")
         haris.save(flush : true, failOnError: true)
         Project mobileApp = new Project (title: "mobileApp" , owner: haris)
         mobileApp.save(flush : true, failOnError: true)

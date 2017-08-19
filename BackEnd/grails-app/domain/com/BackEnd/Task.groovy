@@ -9,10 +9,10 @@ class Task {
     Date created
     Date updated
     Integer deleteFlag = 0
-    Project project
+    //Project project
 
     static hasMany = [comment: Comment]
-    static hasOne = [reportedBy: com.BackEnd.User, assignedTo: com.BackEnd.User]
+    static hasOne = [reportedBy: com.BackEnd.User, assignedTo: com.BackEnd.User, project: Project]
 
     static belongsTo = [project : Project]
 

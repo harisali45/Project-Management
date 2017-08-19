@@ -10,6 +10,8 @@ class ProjectController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
     static responseFormats= ['json','xml']
 
+    def emailService
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Project.list(params), model:[projectCount: Project.count()]
@@ -84,6 +86,19 @@ class ProjectController {
             }
             '*'{ respond project, [status: OK] }
         }
+    }
+
+    def addUser (String emailAddress) {
+        Email email = new Email (toAddress: emailAddress,
+                fromAddress: grailsApplication.config.mail.username,
+                subject: g.message(code: "new.user.invite"),
+                content: g.message(code: "new.user.invite.message"))
+
+        emailService.sendEmail(email)
+
+        User user = new User( email: emailAddress, userStatus: com.BackEnd.UserStatusEnum.initiated )
+        user.save(flush: true)
+        log.info "User created with id: ${user.id}, email: ${user.email}"
     }
 
     @Transactional

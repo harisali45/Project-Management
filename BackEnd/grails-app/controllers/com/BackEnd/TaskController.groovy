@@ -8,18 +8,24 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class TaskController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    //static allowedMethods = [list: "POST", save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Task.list(params), model:[taskCount: Task.count()]
     }
 
-    def list(Integer projectId) {
+
+    def list() {
         log.info "project ID: ${params}"
         Project project = Project.get(params.projectId)
-        log.info "project is null? ${!project}"
-        def tasks = Task.findAllByProject(project)
+        log.info "project is null? ${project?.title}"
+        log.info "project id: ${Task.list().get(0).project.id}"
+        //def tasks = Task.findAllByProject(project)
+       /* def tasks = Task.createCriteria().list {
+            eq "project.id", project.id
+        }*/
+        def tasks = Task.executeQuery("select t.id from Task t where t.project=:project",[project: project])
         Map model = [tasks: tasks]
         log.info "task list: ${tasks.size}"
         respond model as JSON

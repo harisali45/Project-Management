@@ -7,19 +7,19 @@ import javax.security.auth.login.FailedLoginException
 
 class UserController {
 
-    def save(UserBean userBean, ResponseMessage response) {
+    def save(UserCommand userCommand, ResponseMessage response) {
         User user=new User()
-        user.email = userBean.email
-        user.name = userBean.name
-        user.username = userBean.username
+        user.email = userCommand.email
+        user.name = userCommand.name
+        user.username = userCommand.username
 
-        if(userBean.password != userBean.confirmPassword) {
+        if(userCommand.password != userCommand.confirmPassword) {
             response.message = "Passwords do not match"
             render response as JSON
             return
         }
 
-        Login login = new Login(user: user, password: userBean.password)
+        Login login = new Login(user: user, password: userCommand.password)
 
         if(user.save(flush: true) && login.save(flush: true)) {
             response.success = true
@@ -32,24 +32,31 @@ class UserController {
 
     }
 
-    def login(String username, String password){
+    def login(){
 
+        String username = params.username
+        String password = params.password
         User user = User.findByUsername(username)
+        ResponseMessage response = new ResponseMessage();
 
         try {
             if (!user)
                 throw FailedLoginException
 
-            Login login = Login.findByUser(user)
-
-            if (login.password != password)
+            if (user.password != password)
                 throw FailedLoginException
 
+            response.success = true
+
         } catch (FailedLoginException) {
-            ResponseMessage response = new ResponseMessage(message: g.message(code: "login.failed"))
-            render response as JSON
-            return
+
+            response.message = g.message(code: "user.login.failed")
+            response.success = false
+
         }
+
+        Map model = [response: response]
+        render model as JSON
 
     }
 

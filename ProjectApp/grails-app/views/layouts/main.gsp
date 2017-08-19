@@ -23,9 +23,11 @@
 
     <asset:stylesheet src="style.min.css" />
 
-    <asset:stylesheet src="all-themes.css"  />
+    <asset:stylesheet src="theme-red.min.css"  />
 
     <asset:stylesheet src="font-awesome.min.css" />
+
+    <asset:stylesheet src="custom.css" />
 
     <g:layoutHead/>
 </head>
@@ -293,6 +295,9 @@
     <asset:javascript src="jquery.slimscroll.js" />
     <asset:javascript src="waves.min.js" />
     <asset:javascript src="jquery.countTo.js" />
+    <asset:javascript src="admin.js" />
+    <asset:javascript src="index.js" />
+    <asset:javascript src="demo.js" />
 
 </body>
 </html>

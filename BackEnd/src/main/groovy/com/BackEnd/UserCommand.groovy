@@ -1,6 +1,6 @@
 package com.BackEnd
 
-class UserBean {
+class UserCommand {
 
     String username
     String email
