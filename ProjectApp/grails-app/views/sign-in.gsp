@@ -52,7 +52,7 @@
                 </g:if>
                 <div class="row m-t-15 m-b--20">
                     <div class="col-xs-6">
-                        <a href="/signUp">Register Now!</a>
+                        <a href="${g.createLink(controller: "user", action: "showSignUp")}">Register Now!</a>
                     </div>
                     <div class="col-xs-6 align-right">
                         <a href="/forgotPassword">Forgot Password?</a>

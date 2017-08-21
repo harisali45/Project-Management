@@ -1,5 +1,7 @@
 package backend
 
+import com.BackEnd.User
+
 class UrlMappings {
 
     static mappings = {
@@ -8,6 +10,8 @@ class UrlMappings {
                 // apply constraints here
             }
         }
+
+        "/user"(resource: User)
 
         "/"(view:"/index")
         "500"(view:'/error')

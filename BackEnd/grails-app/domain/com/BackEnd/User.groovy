@@ -1,5 +1,8 @@
 package com.BackEnd
 
+import grails.rest.Resource
+
+//@Resource(uri='/loginUser', formats = ["json"])
 class User {
 
     String username

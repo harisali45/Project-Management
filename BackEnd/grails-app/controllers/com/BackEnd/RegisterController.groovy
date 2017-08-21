@@ -5,7 +5,7 @@ import grails.converters.JSON
 import javax.security.auth.login.FailedLoginException
 
 
-class UserController {
+class RegisterController {
 
     def save(UserCommand userCommand, ResponseMessage response) {
         User user=new User()
@@ -28,7 +28,8 @@ class UserController {
             response.message = "User creation failed due to: ${user.errors.allErrors.join('\n')} \n${login.errors.allErrors.join('\n')}"
         }
 
-        render response as JSON
+        Map model = [result: response]
+        render model as JSON
 
     }
 
@@ -55,7 +56,7 @@ class UserController {
 
         }
 
-        Map model = [response: response]
+        Map model = [result: response]
         render model as JSON
 
     }

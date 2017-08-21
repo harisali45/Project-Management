@@ -17,7 +17,8 @@ class UrlMappings {
         )
 
         "/signUp"(view:"/sign-up")
-        "/user/login"(controller: "user", action: "login")
+        "/showSignUp"(controller: "user", action: "showSignUp")
+        //"/user/login"(controller: "login", action: "login")
         "/forgotPassword"(view:"/forgot-password")
         "500"(view:'/error')
         "404"(view:'/notFound')
