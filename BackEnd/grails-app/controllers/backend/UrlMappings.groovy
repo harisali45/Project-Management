@@ -11,7 +11,7 @@ class UrlMappings {
             }
         }
 
-        "/user"(resource: User)
+        //"/user"(resource: User)
 
         "/"(view:"/index")
         "500"(view:'/error')

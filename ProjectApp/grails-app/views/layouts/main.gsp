@@ -72,7 +72,7 @@
             <a href="javascript:void(0);" class="bars"></a>
             <a class="navbar-brand" >PROJECT MANAGEMENT</a>
         </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
+        %{-- <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <!-- Call Search -->
                 <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
@@ -198,10 +198,10 @@
                         </li>
                     </ul>
                 </li>
-                <!-- #END# Tasks -->--}%
+                <!-- #END# Tasks -->- -}%
                 <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
             </ul>
-        </div>
+        </div> --}%
     </div>
 </nav>
 <!-- #Top Bar -->
@@ -237,13 +237,13 @@
                 <li class="active">
                     <a href="${g.createLink(controller: "project", action: "list")}">
                         <i class="material-icons">home</i>
-                        <span>Home</span>
+                        <span><Projects</span>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="${g.createLink(controller: "task", action: "list", params: [projectId: 1])}">
                         <i class="material-icons">text_fields</i>
-                        <span>Typography</span>
+                        <span>Tasks</span>
                     </a>
                 </li>
             </ul>

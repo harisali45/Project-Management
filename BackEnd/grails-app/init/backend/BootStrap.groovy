@@ -16,6 +16,9 @@ class BootStrap {
         Task task = new Task (title: "planning", project: mobileApp, reportedBy: haris, assignedTo: haris)
         task.save(flush: true, failOnError: true)
 
+        mobileApp.addToTask(task)
+        mobileApp.save(flush:true)
+
     }
     def destroy = {
     }

@@ -2,7 +2,7 @@ package com.BackEnd
 
 import grails.rest.Resource
 
-//@Resource(uri='/loginUser', formats = ["json"])
+@Resource(uri='/user', formats = ["json"])
 class User {
 
     String username
@@ -12,22 +12,26 @@ class User {
     Integer deleteFlag = 0
     String password
 
-    static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment]
+    static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment, contributor: Project]
     static mappedBy = [
         reportedBy : 'reportedBy',
-        assignedTo : 'assignedTo'
+        assignedTo : 'assignedTo',
+        contributor: 'contributor',
+        project: 'owner'
     ]
 
     static constraints = {
         email email:true, unique: true, nullable: false
         name validator: { val, obj ->
-            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val))
-                return ["default.required","Name"]
+            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val)) {
+                return ["default.required", "Name"]
+            }
             return true
         }
         username unique: true, validator: { val, obj ->
-            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val))
-                return ["default.required","Username"]
+            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val)) {
+                return ["default.required", "Username"]
+            }
             return true
         }
     }

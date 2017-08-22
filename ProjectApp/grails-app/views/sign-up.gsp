@@ -24,7 +24,8 @@
                         <i class="material-icons">person</i>
                     </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+                        <input type="text" class="form-control" name="username" placeholder="Username"
+                             value="${fieldValue(bean: signUpCommand, field: 'username')}"  required autofocus>
                     </div>
                 </div>
                 <div class="input-group">
@@ -32,7 +33,8 @@
                         <i class="material-icons">person</i>
                     </span>
                     <div class="form-line">
-                        <input type="text" class="form-control" name="name" placeholder="Name" required autofocus>
+                        <input type="text" class="form-control" name="name" placeholder="Name"
+                               value="${fieldValue(bean: signUpCommand, field: 'name')}" required autofocus>
                     </div>
                 </div>
                 <div class="input-group">
@@ -40,7 +42,8 @@
                         <i class="material-icons">email</i>
                     </span>
                     <div class="form-line">
-                        <input type="email" class="form-control" name="email" placeholder="Email Address" required>
+                        <input type="email" class="form-control" name="email" placeholder="Email Address"
+                               value="${fieldValue(bean: signUpCommand, field: 'email')}" required>
                     </div>
                 </div>
                 <div class="input-group">
@@ -48,7 +51,8 @@
                         <i class="material-icons">lock</i>
                     </span>
                     <div class="form-line">
-                        <input type="password" class="form-control" name="password" minlength="6" placeholder="Password" required>
+                        <input type="password" class="form-control" name="password" minlength="6" placeholder="Password"
+                               value="${fieldValue(bean: signUpCommand, field: 'password')}" required>
                     </div>
                 </div>
                 <div class="input-group">
@@ -56,7 +60,8 @@
                         <i class="material-icons">lock</i>
                     </span>
                     <div class="form-line">
-                        <input type="password" class="form-control" name="confirmPassword" minlength="6" placeholder="Confirm Password" required>
+                        <input type="password" class="form-control" name="confirmPassword" minlength="6" placeholder="Confirm Password"
+                               value="${fieldValue(bean: signUpCommand, field: 'confirmPassword')}"  required>
                     </div>
                 </div>
 
@@ -66,6 +71,13 @@
                     <a href="/login">${g.message(code: "user.registered")}</a>
                 </div>
             </g:form>
+            <g:if test="${flash.message}">
+                <div class="row">
+                    <div class="col-md-12 error-msg">
+                        ${flash.message}
+                    </div>
+                </div>
+            </g:if>
         </div>
     </div>
 </div>

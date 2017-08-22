@@ -21,37 +21,17 @@ class ProjectController {
         respond project
     }
 
-    def create() {
-        respond new Project(params)
-    }
-
-    @Transactional
-    def save(Project project) {
-        if (project == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
+    def userProjects () {
+        User user = User.get(params.userId)
+        List projects = Project.findAllByContributor(user)
+        Project project = Project.findByOwner(user)
+        if(projects && project) {
+            projects.add(project)
+        } else if (project){
+            projects = [project]
         }
-
-        if (project.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond project.errors, view:'create'
-            return
-        }
-
-        project.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'project.label', default: 'Project'), project.id])
-                redirect project
-            }
-            '*' { respond project, [status: CREATED] }
-        }
-    }
-
-    def edit(Project project) {
-        respond project
+        Map model = [projects : projects]
+        render model as JSON
     }
 
     def list(){

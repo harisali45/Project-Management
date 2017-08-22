@@ -17,18 +17,11 @@ class TaskController {
 
 
     def list() {
-        log.info "project ID: ${params}"
         Project project = Project.get(params.projectId)
-        log.info "project is null? ${project?.title}"
-        log.info "project id: ${Task.list().get(0).project.id}"
-        //def tasks = Task.findAllByProject(project)
-       /* def tasks = Task.createCriteria().list {
-            eq "project.id", project.id
-        }*/
-        def tasks = Task.executeQuery("select t.id from Task t where t.project=:project",[project: project])
+        def tasks = project.task.toList()
         Map model = [tasks: tasks]
         log.info "task list: ${tasks.size}"
-        respond model as JSON
+        render model as JSON
     }
 
     def show(Task task) {

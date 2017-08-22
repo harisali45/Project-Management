@@ -6,11 +6,12 @@ class Project {
     com.BackEnd.User owner
     Date created = new Date()
     String description
-    com.BackEnd.Task task
+    //com.BackEnd.Task task
     Integer deleteFlag = 0
 
-    static hasMany = [task: com.BackEnd.Task]
+    static hasMany = [task: com.BackEnd.Task, contributor: User]
     static hasOne = [owner: com.BackEnd.User]
+    static belongsTo = [owner: User]
 
     static constraints = {
         title nullable: false
