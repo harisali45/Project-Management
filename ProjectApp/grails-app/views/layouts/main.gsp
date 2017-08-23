@@ -237,7 +237,7 @@
                 <li class="active">
                     <a href="${g.createLink(controller: "project", action: "list")}">
                         <i class="material-icons">home</i>
-                        <span><Projects</span>
+                        <span>Projects</span>
                     </a>
                 </li>
                 <li>

@@ -29,7 +29,7 @@
                     <li class="list-group-item">${project.title}
                         <div class="float-right keep-up">
                         <a class="btn btn-sm bg-blue waves-effect " href="${g.createLink(controller:"task", action: "list",params: [projectId:project.id])}">View Tasks</a>
-                        <a class="btn btn-sm bg-orange waves-effect " href="">View Details</a>
+                        <a class="btn btn-sm bg-orange waves-effect " href="${g.createLink(controller: 'project', action: 'edit', params: [projectId: project.id])}">View Details</a>
                     </div>
                     %{--<span class="badge bg-pink">0 new</span>--}%</li>
                     </g:each>

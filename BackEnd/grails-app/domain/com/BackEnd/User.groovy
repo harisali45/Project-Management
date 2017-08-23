@@ -12,12 +12,12 @@ class User {
     Integer deleteFlag = 0
     String password
 
-    static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment, contributor: Project]
+    static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment/*, contributor: Project*/]
     static mappedBy = [
         reportedBy : 'reportedBy',
         assignedTo : 'assignedTo',
-        contributor: 'contributor',
-        project: 'owner'
+        /*contributor: 'contributor',
+        project: 'owner'*/
     ]
 
     static constraints = {
