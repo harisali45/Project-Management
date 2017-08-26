@@ -1,8 +1,15 @@
 package com.BackEnd
 
 import grails.converters.JSON
+import grails.rest.RestfulController
 
-class CommentController {
+class CommentController extends RestfulController{
+
+    static responseFormats = ['json']
+
+    CommentController() {
+        super(Comment)
+    }
 
     def getComments(Task task) {
         def comments = Comment.findAllByTask(task)
@@ -10,7 +17,7 @@ class CommentController {
         render model as JSON
     }
 
-    def save(Comment comment) {
+    /*def save(Comment comment) {
         ResponseMessage message = new ResponseMessage()
         if(comment.save(flush: true)) {
             message.message = g.message(code: "default.saved")
@@ -19,6 +26,6 @@ class CommentController {
         else
             message.message = g.message(code: "default.failed")
         render message as JSON
-    }
+    }*/
 
 }

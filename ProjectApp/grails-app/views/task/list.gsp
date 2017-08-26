@@ -9,16 +9,22 @@
         <div class="card">
             <div class="header">
                 <h2>
-                Your Projects
-                    <small>Click on a project to view details</small>
+                ${project.title}
+                    <small>Tasks in this project
+                    <a href="${g.createLink(controller: "task", action: "edit", params: [projectId: project.id])}" class="btn bg-blue btn-circle-lg waves-effect waves-circle waves-float top-right"
+                       data-toggle="tooltip" data-placement="bottom" title data-original-title="New Task" >
+                        <i class="material-icons">add</i>
+                    </a>
+                </small>
                 </h2>
             </div>
             <div class="body">
                 <ul class="list-group">
                     <g:each in="${tasks}" var="task">
                     <li class="list-group-item">${task.title}
-                        %{--<button class="btn btn-primary" onclick="${g.createLink(controller:"task", action: "list",params: [project:project.id])}">View Details</button>--}%
-                        <span class="badge bg-pink">0 new</span></li>
+                        <div class="float-right keep-up">
+                        <a class="btn btn-primary" href="${g.createLink(controller:"task", action: "edit",params: [taskId:task.id])}">View Details</a>
+                        </div>
                     </g:each>
                 </ul>
             </div>

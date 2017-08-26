@@ -1,6 +1,7 @@
 package com.ProjectApp
 
 import grails.transaction.Transactional
+import org.grails.web.json.JSONObject
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 
@@ -12,7 +13,7 @@ class ConverterService {
         properties.each { prop ->
             form.add(prop.toString() , obj.getAt(prop).toString())
         }
-
+        log.info "${form}"
         form
     }
 

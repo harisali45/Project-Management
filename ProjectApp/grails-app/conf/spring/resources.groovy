@@ -1,7 +1,8 @@
+import java.text.SimpleDateFormat
+
 // Place your Spring DSL code here
 beans = {
         rest(grails.plugins.rest.client.RestBuilder)
-        server("localhost")
-        port("8090")
-        restAddress("http://localhost:8090/project/list")
+
+        simpleDateFormat (java.text.SimpleDateFormat, "yyyy-MM-dd'T'HH:mm:ss'Z'")
 }

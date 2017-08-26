@@ -28,9 +28,15 @@ class User {
             }
             return true
         }
-        username unique: true, validator: { val, obj ->
+        username nullable: true, unique: true, validator: { val, obj ->
             if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val)) {
                 return ["default.required", "Username"]
+            }
+            return true
+        }
+        password nullable: true, validator: { val, obj ->
+            if(obj.password != com.BackEnd.UserStatusEnum.initiated && !(val)) {
+                return ["default.required", "Password"]
             }
             return true
         }

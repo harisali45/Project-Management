@@ -27,7 +27,7 @@ logger 'grails.app.services', DEBUG, ['STDOUT'], false
 logger 'grails.app.domain', DEBUG, ['STDOUT'], false
 logger 'grails.app.taglib', DEBUG, ['STDOUT'], false
 
-appender("EMAIL", SMTPAppender) {
+/*appender("EMAIL", SMTPAppender) {
     smtpHost = "email-smtp.eu-west-1.amazonaws.com"
     smtpPort = 587
     STARTTLS = true
@@ -44,12 +44,12 @@ appender("EMAIL", SMTPAppender) {
     cyclicBufferTracker(CyclicBufferTracker) {
         bufferSize = 10
     }
-}
+}*/
 
 if (Environment.isDevelopmentMode()) {
     root(ERROR, ['STDOUT'])
 } else {
-    root(ERROR, ['STDOUT', 'EMAIL'])
+    root(ERROR, ['STDOUT'])
 }
 
 def targetDir = BuildSettings.TARGET_DIR

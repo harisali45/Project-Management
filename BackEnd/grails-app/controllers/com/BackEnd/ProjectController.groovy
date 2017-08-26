@@ -8,13 +8,19 @@ import grails.converters.JSON
 
 class ProjectController extends RestfulController {
 
-    //static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
     static responseFormats= ['json']
 
     def emailService
 
     ProjectController() {
         super(Project)
+    }
+
+    def show() {
+        Project project = Project.findById(params.projectId)
+        User user = project.owner
+        Map model = [project: project, owner: user]
+        render model as JSON
     }
 
     def userProjects () {
@@ -31,11 +37,8 @@ class ProjectController extends RestfulController {
     }
 
     def list(){
-        /*User haris=new User (username: "haris", name: "Haris", email: "haris@yallacompare.com")
-        haris.save(flush : true, failOnError: true)
-        new Project (title: "mobileApp" , owner: haris).save(failOnError:true)
-        new Project (title: "broker application", owner: haris).save()*/
         Map model = [projects: Project.getAll()]
         render model as JSON
     }
+
 }

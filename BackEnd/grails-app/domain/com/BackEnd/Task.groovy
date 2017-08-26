@@ -6,8 +6,8 @@ class Task {
     String description
     com.BackEnd.User reportedBy
     com.BackEnd.User assignedTo
-    Date created
-    Date updated
+    Date created = new Date()
+    Date updated = new Date()
     Integer deleteFlag = 0
     //Project project
 
@@ -19,11 +19,13 @@ class Task {
     static constraints = {
         title nullable: false
         description nullable: true
-        created nullable: true
+        created nullable: false
         updated nullable: true
+        assignedTo nullable: true
     }
 
     static mapping = {
         deleteFlag defaultValue : 0
+        comment fetch: 'eager'
     }
 }

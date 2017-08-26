@@ -1,14 +1,20 @@
 package com.BackEnd
 
 import grails.converters.JSON
+import grails.rest.RestfulController
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
-@Transactional(readOnly = true)
-class TaskController {
+
+class TaskController extends RestfulController {
 
     //static allowedMethods = [list: "POST", save: "POST", update: "PUT", delete: "DELETE"]
+    static responseFormats = ['json']
+
+    TaskController() {
+        super(Task)
+    }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -19,42 +25,17 @@ class TaskController {
     def list() {
         Project project = Project.get(params.projectId)
         def tasks = project.task.toList()
-        Map model = [tasks: tasks]
+        Map model = [tasks: tasks, project: project]
         log.info "task list: ${tasks.size}"
         render model as JSON
     }
 
-    def show(Task task) {
+    /*def show(Task task) {
         respond task
-    }
+    }*/
 
     def create() {
         respond new Task(params)
-    }
-
-    @Transactional
-    def save(Task task) {
-        if (task == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        if (task.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond task.errors, view:'create'
-            return
-        }
-
-        task.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'task.label', default: 'Task'), task.id])
-                redirect task
-            }
-            '*' { respond task, [status: CREATED] }
-        }
     }
 
     def edit(Task task) {

@@ -84,6 +84,8 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
+    databinding:
+        convertEmptyStringsToNull: false
 endpoints:
     jmx:
         unique-names: true

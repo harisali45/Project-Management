@@ -28,6 +28,7 @@ class LoginController {
             session.putAt("name",user.name)
             session.putAt("username",loginCommand.username)
             session.putAt("email",user.email)
+            session.putAt("userId",user.id)
             redirect controller: "project", action: "list", params: [userId: user.id]
         } else {
             flash.message = result.message

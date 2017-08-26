@@ -9,8 +9,14 @@
         <div class="card">
             <div class="header">
                 <h2>
+                    <g:if test="${project.id}">
                     ${project.title}
-                    <small>Project Details</small>
+                    <small>Created on <g:formatDate date="${project.created}" format="EEE, d MMM yyyy" /> by ${project.owner.name}</small>
+                    </g:if>
+                    <g:if test="${!project.id}">
+<g:message code="new.message" args="['Project']" />
+                        <small>Enter the details below and click on save</small>
+                    </g:if>
                 </h2>
             </div>
             <div class="body">
@@ -24,7 +30,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="text" id="title"  name="title" class="form-control" placeholder="Enter project title"
-                                           value="${fieldValue(bean: project, field: 'title')}" />
+                                           value="${fieldValue(bean: project, field: 'title')}" required />
                                 </div>
                             </div>
                         </div>
@@ -36,8 +42,12 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea type="text" id="description" name="description" class="form-control no-resize" placeholder="Enter project description"
-                                              value="${fieldValue(bean: project, field: 'description')}" rows="3" cols="20"></textarea>
+                                    %{--<input type="text" id="description"  name="description" class="form-control" placeholder="Enter project description"
+                                           value="${fieldValue(bean: project, field: 'description')}" />--}%
+                                    <g:textArea name="description" value="${fieldValue(bean: project, field: 'description')}"
+                                    class="form-control no-resize" />
+                                    %{--<textarea type="text" id="description" name="description" class="form-control no-resize" placeholder="Enter project description"
+                                              value="${fieldValue(bean: project, field: 'description')}" rows="3" cols="20"></textarea>--}%
                                 </div>
                             </div>
                         </div>
@@ -47,6 +57,13 @@
                             <input type="submit" class="btn btn-primary m-t-15 waves-effect" value="Update"></input>
                         </div>
                     </div>
+                    <g:if test="${flash.message}">
+                        <div class="row">
+                            <div class="col-md-12 error-msg">
+                                ${flash.message}
+                            </div>
+                        </div>
+                    </g:if>
                 </g:form>
             </div>
         </div>

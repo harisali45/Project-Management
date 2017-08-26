@@ -4,15 +4,15 @@ class Comment {
 
     com.BackEnd.User user
     com.BackEnd.Task task
-    Date created
-    String description
-    Integer deleteFlag
+    Date created = new Date()
+    String content
+    Integer deleteFlag = 0
 
     static belongsTo = [task : com.BackEnd.Task]
     static hasOne = [user: com.BackEnd.User, task: com.BackEnd.Task]
 
     static constraints = {
-        description nullable: false
+        content nullable: false
     }
 
     static mapping = {

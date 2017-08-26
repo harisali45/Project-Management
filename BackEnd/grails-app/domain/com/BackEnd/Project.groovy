@@ -25,5 +25,8 @@ class Project {
     static mapping = {
         created defaultValue: "now()"
         deleteFlag defaultValue : 0
+        owner lazy: false
     }
+
+
 }

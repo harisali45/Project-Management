@@ -72,6 +72,20 @@
             <a href="javascript:void(0);" class="bars"></a>
             <a class="navbar-brand" >PROJECT MANAGEMENT</a>
         </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="pull-right">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"
+                   role="button" aria-expanded="true">
+                    <i class="material-icons">more_vert</i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="body">
+                        <a href="${g.createLink(controller: 'user', action: 'show')}"><i class="material-icons">account_circle</i> Profile</a>
+                        <a href="${g.createLink(controller: 'login', action: 'logout')}"><i class="material-icons">power_settings_new</i> Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
         %{-- <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <!-- Call Search -->
