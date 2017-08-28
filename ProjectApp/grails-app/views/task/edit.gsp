@@ -76,7 +76,21 @@
                     <div role="tabpanel" class="tab-pane fade" id="comments">
                         <g:if test="${task.id}">
                         <g:each in="${task.comment}" var="comment">
-                            ${comment.content}
+                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                <i class="material-icons md-48 pull-right">account_circle</i>
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12" >
+                            %{--<div class="col-lg-offset-2 col-md-offset-2 col-lg-10 col-md-10 col-sm-12 col-xs-12" >--}%
+                                <blockquote class="blockquote-small">
+                                    <p>
+                                    ${comment.content}
+                                    </p>
+                                    <footer>
+                                        by Haris on 25 May 2017
+                                    </footer>
+                                </blockquote>
+                            </div>
+                            <div class="col-sm-12 div-divider" ></div>
                         </g:each>
                         <g:form class="form-horizontal" url="${g.createLink(controller: 'task', action: 'postComment')}">
                             <g:hiddenField name="taskId" value="${g.fieldValue(bean: task, field: 'id')}" />
@@ -93,7 +107,10 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                                    <input type="submit" class="btn btn-primary m-t-15 waves-effect" value="Post Comment"></input>
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect" >
+                                        <i class="material-icons">comment</i>
+                                        <span>Post Comment</span>
+                                    </button>
                                 </div>
                             </div>
                             <g:if test="${flash.message}">

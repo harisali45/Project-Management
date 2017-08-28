@@ -26,6 +26,7 @@ class Task {
 
     static mapping = {
         deleteFlag defaultValue : 0
-        comment fetch: 'eager'
+        //comment fetch: 'join'
+        comment lazy: false
     }
 }

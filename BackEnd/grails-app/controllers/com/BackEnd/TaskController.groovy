@@ -2,6 +2,7 @@ package com.BackEnd
 
 import grails.converters.JSON
 import grails.rest.RestfulController
+import org.hibernate.FetchMode
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -30,9 +31,21 @@ class TaskController extends RestfulController {
         render model as JSON
     }
 
-    /*def show(Task task) {
+    def show(Task task) {
         respond task
-    }*/
+        /*Task.createCriteria().list {
+            idEq(task.id)
+            fetchMode 'comment' FetchMode.eager
+        }*/
+
+        /*Task tas = Task.get(task.id,[fetch:[comment:'eager']])
+        render tas as JSON*/
+        /*def tas = Task.executeQuery(
+                ' select t from Task t '+
+                        'left outer join fetch t.comment as comment '+
+                        'where t.id=:tid ',[tid:task.id])
+        render tas as JSON*/
+    }
 
     def create() {
         respond new Task(params)
@@ -40,6 +53,11 @@ class TaskController extends RestfulController {
 
     def edit(Task task) {
         respond task
+        /*Task.withCriteria() {
+            comment {
+                fetchMode "comment", FetchMode.EAGER
+            }
+        }*/
     }
 
     @Transactional

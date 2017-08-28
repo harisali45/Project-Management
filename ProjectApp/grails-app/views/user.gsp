@@ -42,7 +42,7 @@
     </div>
     <div class="row clearfix">
         <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-            <input type="submit" class="btn btn-primary m-t-15 waves-effect" value="Update"></input>
+            <button type="submit" class="btn btn-primary m-t-15 waves-effect" ><i class="material-icons">save</i><span>Update</span></button>
         </div>
     </div>
 </g:form>
@@ -102,7 +102,8 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                            <input type="submit" class="btn btn-primary m-t-15 waves-effect" value="Change Password"></input>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect" >
+                                <i class="material-icons">vpn_key</i><span>Change Password</span></button>
                         </div>
                     </div>
 </g:form>
@@ -149,7 +150,8 @@
                         </div>
                     <div class="row clearfix">
                         <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                            <input type="submit" class="btn btn-primary m-t-15 waves-effect" value="Invite"></input>
+                            <button type="submit" class="btn btn-primary m-t-15 waves-effect" >
+                                <i class="material-icons">email</i><span>Invite User</span></button>
                         </div>
                     </div>
                     </g:form>

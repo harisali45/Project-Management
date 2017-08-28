@@ -47,7 +47,7 @@ class UserController {
     }
 
     def save(SignUpCommand user) {
-        RestResponse resp = rest.put("${grailsApplication.config.backEnd}user/update") {
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}user/updateDetails") {
             contentType("application/x-www-form-urlencoded")
             body(converterService.convertToMap(user, ["name","email"]).add("id", "${session.userId}"))
         }

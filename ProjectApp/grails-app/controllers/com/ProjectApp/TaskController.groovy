@@ -31,6 +31,7 @@ class TaskController {
             task.reportedBy = resp.json.reportedBy
             task.assignedTo = resp.json.assignedTo
             task.project = resp.json.project.id
+            task.comment = [[id: 1, content: "We need to finish this as soon as possible"],[id: 2, content: "Finish this quickly!!!"]]
         } else {
             task.project = projectId
         }

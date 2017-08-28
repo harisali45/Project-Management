@@ -2,11 +2,17 @@ package com.BackEnd
 
 import grails.rest.RestfulController
 
-class UserController extends RestfulController {
+class UserController {
 
-    static responseFormats = ['json']
 
-    UserController() {
-        super (User)
+
+    def updateDetails() {
+        log.info "${params}"
+        User user = User.get(params.id)
+        user.email(params.email)
+        user.name(params.name)
+        user.save(flush:true)
+
+
     }
 }

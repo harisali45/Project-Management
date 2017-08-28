@@ -44,9 +44,6 @@ class ProjectController {
                 contentType("application/x-www-form-urlencoded")
                 body(converterService.convertToMap(projectCommand, ["id", "title", "description","owner"]))
             }
-            log.info "${resp.properties}"
-            String showUrl = resp.headers.location
-            projectCommand.id = Long.parseLong("${showUrl.charAt(showUrl.lastIndexOf("/")+1)}")
         } else {
             resp = rest.put("${grailsApplication.config.backEnd}project/update") {
                 contentType("application/x-www-form-urlencoded")
@@ -55,11 +52,14 @@ class ProjectController {
         }
         if(resp.json?.errors) {
             flash.message = ""
-            resp.json.errors.each {error ->
+            resp.json.errors.each { error ->
                 flash.message = "${flash.message}${error.message}\n"
             }
         } else {
-            log.info "returned project: ${resp.json}"
+            if(!projectCommand.id) {
+                String showUrl = resp.headers.location
+                projectCommand.id = Long.parseLong("${showUrl.charAt(showUrl.lastIndexOf("/") + 1)}")
+            }
             flash.message = g.message(code:"save.successful", args: ["Project"])
         }
         redirect action: "edit", params: [projectId: projectCommand.id]
