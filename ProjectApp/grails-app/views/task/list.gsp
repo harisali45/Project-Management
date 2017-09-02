@@ -4,12 +4,23 @@
     <title>Projects</title>
 </head>
 <body>
+<breadcrumb:list icon="list" title="Tasks" ></breadcrumb:list>
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
                 <h2>
-                ${project.title}
+                    <g:form controller="task" action="list" >
+                    Tasks in  <g:select id="newUser" name="projectId"
+                                        from="${projects}"
+                                        optionKey="id"
+                                        optionValue="title"
+                                        value="${project.id}"
+                                        data-live-search="true"
+                                        class="selectpicker"
+                                        required="required"
+                                        onchange="submit()"    />
+                    </g:form>
                     <small>Tasks in this project
                     <a href="${g.createLink(controller: "task", action: "edit", params: [projectId: project.id])}" class="btn bg-blue btn-circle-lg waves-effect waves-circle waves-float top-right"
                        data-toggle="tooltip" data-placement="bottom" title data-original-title="New Task" >
@@ -23,7 +34,9 @@
                     <g:each in="${tasks}" var="task">
                     <li class="list-group-item">${task.title}
                         <div class="float-right keep-up">
-                        <a class="btn btn-primary" href="${g.createLink(controller:"task", action: "edit",params: [taskId:task.id])}">View Details</a>
+                        <a class="btn btn-primary btn-xs" href="${g.createLink(controller:"task", action: "edit",params: [taskId:task.id])}">
+                            <i class="material-icons">format_list_bulleted</i><span>Details</span>
+                        </a>
                         </div>
                     </g:each>
                 </ul>

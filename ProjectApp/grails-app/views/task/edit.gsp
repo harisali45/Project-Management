@@ -4,6 +4,7 @@
     <title>Projects</title>
 </head>
 <body>
+<breadcrumb:list icon="edit" title="${task.id?'Edit Task':'New Task'}" ></breadcrumb:list>
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
@@ -11,7 +12,9 @@
                 <h2>
                     <g:if test="${task.id}">
                         ${task.title}
-                        <small>Created on <g:formatDate date="${task.created}" format="EEE, d MMM yyyy" /> by</small>
+                        <small>Created on <g:formatDate date="${task.created}" format="EEE, d MMM yyyy" /> by ${task.reportedBy.name}
+                        <taskStatus:showBadge class="top-right" status="${task.status}" />
+                        </small>
                     </g:if>
                     <g:if test="${!task.id}">
                         <g:message code="new.message" args="['Task']" />
@@ -59,18 +62,81 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <g:if test="${task.assignedTo?.id == session.userId}">
                             <div class="row clearfix">
-                                <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
-                                    <input type="submit" class="btn btn-primary m-t-15 waves-effect" value="Update"></input>
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label >Status</label>
                                 </div>
-                            </div>
-                            <g:if test="${flash.message}">
-                                <div class="row">
-                                    <div class="col-md-12 error-msg">
-                                        ${flash.message}
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <g:radio name="status" type="radio" id="ongoingStatus" value="ONGOING"
+                                                   class="with-gap radio-col-orange" checked="${task.status == 'ONGOING'}" />
+                                            <label for="ongoingStatus">Ongoing</label>
+                                            <g:radio name="status" type="radio" id="completedStatus" checked="${task.status == 'COMPLETED'}"
+                                                   class="with-gap radio-col-green" value="COMPLETED" />
+                                            <label for="completedStatus">Completed</label>
+                                            <g:radio name="status" type="radio" id="cancelledStatus" value="CANCELLED" class="with-gap radio-col-red" />
+                                            <label for="cancelledStatus">Cancelled</label>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
                             </g:if>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label >Assigned To</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    %{--<div class="form-group">
+                                        <div class="btn-group bootstrap-select form-control show-tick">
+                                            <button type="button" class="btn dropdown-toggle btn-default"
+                                                    data-toggle="dropdown" title="${task.assignedTo?.name}" aria-expanded="false">
+                                                <span class="filter-option pull-left">${task.assignedTo?.name}</span>&nbsp;
+                                                <span class="bs-caret"><span class="caret"></span></span></button>
+                                            <div class="dropdown-menu open"
+                                                 style="max-height: 350px; overflow: hidden; min-height: 40px;">
+                                                <div class="bs-searchbox">
+                                                    <input type="text" class="form-control" autocomplete="off">
+                                                </div>
+                                                <ul class="dropdown-menu inner" role="menu" style="max-height: 300px; overflow-y: auto; min-height: 0px;">
+                                                    <g:each in="${usersInProject}" var="user">
+                                                    <li data-original-index="${index}" class="${(user.id == task.assignedTo?.id)?'selected active':''}">
+                                                        <a tabindex="0" class="" style="" data-tokens="null">
+                                                        <span class="text">${user.name}</span>
+                                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                                        </a>
+                                                    </li>
+                                                    </g:each>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>--}%
+                                    <g:select id="assignedTo" name="assignedTo"
+                                              from="${usersInProject}"
+                                              value="${task.assignedTo?.id}"
+                                              optionKey="id"
+                                              optionValue="name"
+                                              data-live-search="true"
+                                              class="selectpicker"
+                                              noSelection="['':'-------- Users --------']"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4 col-xs-offset-5">
+                                    <button type="submit" class="btn btn-primary m-t-15 waves-effect" >
+                                        <i class="material-icons">edit</i>
+                                        <span>
+                                            Update
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
                         </g:form>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="comments">
@@ -86,14 +152,14 @@
                                     ${comment.content}
                                     </p>
                                     <footer>
-                                        by Haris on 25 May 2017
+                                        by ${comment.user.name} on <g:formatDate format="EEE, d MMM yyyy" date="${comment.created}" />
                                     </footer>
                                 </blockquote>
                             </div>
                             <div class="col-sm-12 div-divider" ></div>
                         </g:each>
                         <g:form class="form-horizontal" url="${g.createLink(controller: 'task', action: 'postComment')}">
-                            <g:hiddenField name="taskId" value="${g.fieldValue(bean: task, field: 'id')}" />
+                            <g:hiddenField name="task" value="${g.fieldValue(bean: task, field: 'id')}" />
                             <div class="row clearfix">
                                 <div class="col-lg-offset-2 col-md-offset-2 col-sm-offset-4  col-lg-10 col-md-10 col-sm-8 col-xs-7">
                                     <div class="form-group">
@@ -113,13 +179,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <g:if test="${flash.message}">
-                                <div class="row">
-                                    <div class="col-md-12 error-msg">
-                                        ${flash.message}
-                                    </div>
-                                </div>
-                            </g:if>
                         </g:form>
                         </g:if>
                         <g:if test="${!task.id}">

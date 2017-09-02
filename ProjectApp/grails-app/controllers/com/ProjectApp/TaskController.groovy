@@ -9,36 +9,39 @@ class TaskController {
     def rest
     def converterService
     def simpleDateFormat
+    def errorService
+    def getObjectsService
 
     def list (Integer projectId) {
         def resp = rest.get("${grailsApplication.config.backEnd}task/list?projectId=${projectId}")
         def tasks = resp.json.tasks
         def project = resp.json.project
-        def model = [tasks : tasks, project: project]
+        def projects = rest.get("${grailsApplication.config.backEnd}project/list").json.projects
+        def model = [tasks : tasks, project: project, projects: projects]
         render view: "/task/list", model: model
     }
 
-    def edit (Integer taskId, CommentCommand comment, Integer projectId) {
+    def edit (Integer taskId, CommentCommand comment, Long projectId) {
         TaskCommand task = new TaskCommand()
         if(taskId) {
             RestResponse resp = rest.get("${grailsApplication.config.backEnd}task/show/${taskId}")
-            log.info "${resp.json}"
             task.id = resp.json.id
             task.title = resp.json.title
             task.description = resp.json.description
-            task.comment = resp.json.comment
+            task.comment = getObjectsService.getComments(task.id)
             task.created = simpleDateFormat.parse(resp.json.created)
-            task.reportedBy = resp.json.reportedBy
-            task.assignedTo = resp.json.assignedTo
+            task.reportedBy = getObjectsService.getUser(resp.json.reportedBy.id)
+            task.assignedTo = resp.json.assignedTo?getObjectsService.getUser(resp.json.assignedTo.id) : resp.json.assignedTo
             task.project = resp.json.project.id
-            task.comment = [[id: 1, content: "We need to finish this as soon as possible"],[id: 2, content: "Finish this quickly!!!"]]
+            task.status = resp.json.status
         } else {
             task.project = projectId
         }
+        List usersInProject = getObjectsService.getUsersInProject(task.project)
         if(!comment) {
             comment = new CommentCommand()
         }
-        Map model = [task: task, comment: comment]
+        Map model = [task: task, comment: comment, usersInProject: usersInProject]
         render view: "/task/edit", model: model
     }
 
@@ -48,12 +51,15 @@ class TaskController {
             task.reportedBy = session.getProperty("userId")
             resp = rest.post("${grailsApplication.config.backEnd}task/save") {
                 contentType("application/x-www-form-urlencoded")
-                body(converterService.convertToMap(task, ["id", "title", "description","reportedBy","project"]))
+                body(converterService.convertToMap(task, ["title", "description","reportedBy","project"])
+                      .add("assignedTo",params.assignedTo) )
             }
+            log.info "${resp}"
         } else {
             resp = rest.put("${grailsApplication.config.backEnd}task/update") {
                 contentType("application/x-www-form-urlencoded")
-                body(converterService.convertToMap(task, ["id", "title", "description"]))
+                body(converterService.convertToMap(task, ["id", "title", "description", "status"])
+                        .add("assignedTo",params.assignedTo) )
             }
         }
         if(resp.json?.errors) {
@@ -61,6 +67,7 @@ class TaskController {
             resp.json.errors.each {error ->
                 flash.message = "${flash.message}${error.message}\n"
             }
+            flash.error = true
         } else {
             if(!task.id) {
                 String showUrl = resp.headers.location
@@ -69,18 +76,18 @@ class TaskController {
             flash.message = g.message(code:"save.successful", args: ["Task"])
         }
         redirect action: "edit", params: [taskId: task.id]
-
-
     }
 
     def postComment (CommentCommand comment) {
         comment.user = session.getAt("userId")
-        RestResponse resp = rest.post("${grailsApplication.config.backEnd}comment/save")
-        if(resp.json?.errors) {
-
-        } else {
-
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}comment/save") {
+            contentType("application/x-www-form-urlencoded")
+            body(converterService.convertToMap(comment, ["content", "user", "task"]))
         }
-        redirect action: "edit", params: [taskId: comment.taskId, comment: comment]
+        if(resp.json?.errors) {
+            flash.message = errorService.getErrorMsg(resp.json)
+            flash.error = true
+        }
+        redirect action: "edit", params: [taskId: comment.task, comment: comment]
     }
 }

@@ -11,21 +11,9 @@ class CommentController extends RestfulController{
         super(Comment)
     }
 
-    def getComments(Task task) {
-        def comments = Comment.findAllByTask(task)
+    def getComments(Long taskId) {
+        def comments = Comment.findAllByTask(Task.get(taskId), [sort: "created", order: "desc"])
         Map model = [comments : comments]
         render model as JSON
     }
-
-    /*def save(Comment comment) {
-        ResponseMessage message = new ResponseMessage()
-        if(comment.save(flush: true)) {
-            message.message = g.message(code: "default.saved")
-            message.success = true
-        }
-        else
-            message.message = g.message(code: "default.failed")
-        render message as JSON
-    }*/
-
 }

@@ -21,18 +21,15 @@
     <!-- Animation Css -->
     <asset:stylesheet src="animate.css"  />
 
+    <asset:stylesheet src="bootstrap-select.min.js" />
     <asset:stylesheet src="style.min.css" />
-
     <asset:stylesheet src="theme-red.min.css"  />
-
     <asset:stylesheet src="font-awesome.min.css" />
-
     <asset:stylesheet src="custom.css" />
 
     <g:layoutHead/>
 </head>
 <body>
-
 <!-- Page Loader -->
 %{--<div class="page-loader-wrapper">
     <div class="loader">
@@ -312,6 +309,21 @@
     <asset:javascript src="admin.js" />
     <asset:javascript src="index.js" />
     <asset:javascript src="demo.js" />
+    <asset:javascript src="bootstrap-notify.min.js" />
+    <asset:javascript src="application.js" />
+
+<g:if test="flash.message" >
+    <g:if test="${flash.error}">
+        <script type="text/javascript">
+            showNotification('alert-danger', "${flash.message}", 'top', 'right');
+        </script>
+    </g:if>
+    <g:if test="${(!flash.error)}">
+        <script type="text/javascript">
+            showNotification('alert-success', "${flash.message}", 'top', 'right');
+        </script>
+    </g:if>
+</g:if>
 
 </body>
 </html>

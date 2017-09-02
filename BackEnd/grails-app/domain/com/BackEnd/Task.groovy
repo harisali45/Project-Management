@@ -9,7 +9,8 @@ class Task {
     Date created = new Date()
     Date updated = new Date()
     Integer deleteFlag = 0
-    //Project project
+    String status = TaskStatusEnum.ONGOING
+
 
     static hasMany = [comment: Comment]
     static hasOne = [reportedBy: com.BackEnd.User, assignedTo: com.BackEnd.User, project: Project]
@@ -26,7 +27,12 @@ class Task {
 
     static mapping = {
         deleteFlag defaultValue : 0
-        //comment fetch: 'join'
-        comment lazy: false
     }
 }
+
+enum TaskStatusEnum {
+    ONGOING ,
+    COMPLETED ,
+    CANCELLED
+}
+

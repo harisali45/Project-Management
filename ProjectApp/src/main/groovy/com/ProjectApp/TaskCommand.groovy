@@ -11,6 +11,7 @@ class TaskCommand {
     Date updated
     List comment
     Long project
+    String status
 
     static constraints = {
         assignedTo nullable: true

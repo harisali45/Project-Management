@@ -11,7 +11,9 @@ class ConverterService {
         MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
 
         properties.each { prop ->
-            form.add(prop.toString() , obj.getAt(prop).toString())
+            if(obj.getAt(prop)) {
+                form.add(prop.toString(), obj.getAt(prop).toString())
+            }
         }
         log.info "${form}"
         form

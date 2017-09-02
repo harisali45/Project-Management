@@ -2,6 +2,9 @@ package com.ProjectApp
 
 import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
+import org.springframework.util.LinkedMultiValueMap
+import org.springframework.util.MultiValueMap
+
 import java.text.SimpleDateFormat
 
 class ProjectController {
@@ -9,6 +12,8 @@ class ProjectController {
     def rest
     def converterService
     def simpleDateFormat
+    def getObjectsService
+    def errorService
 
 
     def list (Integer userId) {
@@ -20,18 +25,19 @@ class ProjectController {
 
     def edit (Integer projectId) {
         session.putAt("userId","1")
+        def usersInProject, usersNotInProject
         ProjectCommand projectCommand = new ProjectCommand()
         if(projectId) {
             def resp = rest.get("${grailsApplication.config.backEnd}project/show?projectId=${projectId}")
-            log.info "returned project for editing ${resp.json}"
             projectCommand.title = resp.json.project.title
             projectCommand.description = resp.json.project.description
             projectCommand.id = resp.json.project.id
             projectCommand.created = simpleDateFormat.parse(resp.json.project.created)
             projectCommand.owner = resp.json.owner
-            log.info "${resp.json.owner}"
+            usersInProject = getObjectsService.getUsersInProject(projectId)
+            usersNotInProject = getObjectsService.getUsersNotInProject(projectId)
         }
-        Map model = [project : projectCommand]
+        Map model = [project : projectCommand,usersNotInProject: usersNotInProject, usersInProject: usersInProject ]
         render view: "/project/edit", model: model
     }
 
@@ -63,5 +69,39 @@ class ProjectController {
             flash.message = g.message(code:"save.successful", args: ["Project"])
         }
         redirect action: "edit", params: [projectId: projectCommand.id]
+    }
+
+    def removeUser(Long userId, Long projectId) {
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
+        form.add("userId", userId.toString())
+        form.add("projectId", projectId.toString())
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}project/removeUser") {
+            contentType("application/x-www-form-urlencoded")
+            body(form)
+        }
+        if(resp.json.result.success) {
+            flash.message = g.message(code: "save.successful", args: ["Project"])
+        } else {
+            flash.message = resp.json.result.message
+            flash.error = true
+        }
+        redirect action: "edit", params: [projectId: projectId]
+    }
+
+    def addUser(Long newUser, Long projectId) {
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>()
+        form.add("userId", newUser.toString())
+        form.add("projectId", projectId.toString())
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}project/addUser") {
+            contentType("application/x-www-form-urlencoded")
+            body(form)
+        }
+        if(resp.json.result.success) {
+            flash.message = g.message(code: "save.successful", args: ["Project"])
+        } else {
+            flash.message = resp.json.result.message
+            flash.error = true
+        }
+        redirect action: "edit", params: [projectId: projectId]
     }
 }

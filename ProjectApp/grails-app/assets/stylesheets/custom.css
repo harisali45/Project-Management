@@ -39,3 +39,11 @@ blockquote.blockquote-small {
     margin-bottom: 7px;
     margin-top: -10px;
 }
+
+.custom-tag {
+    font-size: 13px;
+}
+
+.clickable {
+    cursor: pointer;
+}

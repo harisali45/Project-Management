@@ -4,6 +4,7 @@
     <title>Profile</title>
 </head>
 <body>
+<breadcrumb:list icon="account_circle" title="Profile" ></breadcrumb:list>
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">

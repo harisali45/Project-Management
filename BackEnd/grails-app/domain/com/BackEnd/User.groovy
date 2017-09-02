@@ -1,7 +1,5 @@
 package com.BackEnd
 
-import grails.rest.Resource
-
 class User {
 
     String username

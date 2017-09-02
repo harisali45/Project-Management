@@ -4,6 +4,7 @@
     <title>Projects</title>
 </head>
 <body>
+<breadcrumb:list icon="list" title="Projects" ></breadcrumb:list>
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">

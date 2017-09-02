@@ -1,6 +1,6 @@
 package com.BackEnd
 
-import grails.rest.RestfulController
+import grails.converters.JSON
 
 class UserController {
 
@@ -12,7 +12,18 @@ class UserController {
         user.email(params.email)
         user.name(params.name)
         user.save(flush:true)
-
-
     }
+
+    def getUser(Long userId) {
+        List userList = User.createCriteria().list {
+            projections {
+                "id"
+                "name"
+                "email"
+            }
+            eq("id", userId)
+        }
+        render userList.first() as JSON
+    }
+
 }
