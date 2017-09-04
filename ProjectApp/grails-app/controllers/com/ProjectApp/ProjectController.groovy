@@ -17,7 +17,7 @@ class ProjectController {
 
 
     def list (Integer userId) {
-        def resp = rest.get("${grailsApplication.config.backEnd}project/list")
+        def resp = rest.get("${grailsApplication.config.backEnd}project/list?id=${userId}")
         def projects = resp.json.getAt("projects")
         def model = [projects : projects]
         render view: "/project/list", model: model
@@ -50,23 +50,29 @@ class ProjectController {
                 contentType("application/x-www-form-urlencoded")
                 body(converterService.convertToMap(projectCommand, ["id", "title", "description","owner"]))
             }
+            if(resp.json.result.success) {
+                if(!projectCommand.id) {
+                    projectCommand.id = resp.json.id
+                }
+                flash.message = g.message(code:"save.successful", args: ["Project"])
+            } else {
+                flash.message = resp.json.result.message
+                flash.error = true
+            }
         } else {
             resp = rest.put("${grailsApplication.config.backEnd}project/update") {
                 contentType("application/x-www-form-urlencoded")
                 body(converterService.convertToMap(projectCommand, ["id", "title", "description"]))
             }
-        }
-        if(resp.json?.errors) {
-            flash.message = ""
-            resp.json.errors.each { error ->
-                flash.message = "${flash.message}${error.message}\n"
+            if( resp.json.errors ) {
+                flash.message = ""
+                resp.json.errors.each { error ->
+                    flash.message = "${flash.message}${error.message} "
+                }
+                flash.error = true
+            } else {
+                flash.message = g.message(code:"save.successful", args: ["Project"])
             }
-        } else {
-            if(!projectCommand.id) {
-                String showUrl = resp.headers.location
-                projectCommand.id = Long.parseLong("${showUrl.charAt(showUrl.lastIndexOf("/") + 1)}")
-            }
-            flash.message = g.message(code:"save.successful", args: ["Project"])
         }
         redirect action: "edit", params: [projectId: projectCommand.id]
     }

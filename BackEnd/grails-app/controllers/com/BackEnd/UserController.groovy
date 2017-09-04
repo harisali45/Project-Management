@@ -7,10 +7,9 @@ class UserController {
 
 
     def updateDetails() {
-        log.info "${params}"
         User user = User.get(params.id)
-        user.email(params.email)
-        user.name(params.name)
+        user.email = params.email
+        user.name = params.name
         user.save(flush:true)
     }
 
@@ -24,6 +23,20 @@ class UserController {
             eq("id", userId)
         }
         render userList.first() as JSON
+    }
+
+    def updatePassword() {
+        User user = User.get(params.id)
+        ResponseMessage result = new ResponseMessage()
+        if ( user.password != params.password ) {
+            result.message = g.message(code: "user.invalid.password")
+        } else {
+            user.password = params.newPassword
+            user.save(flush:true)
+            result.success = true
+        }
+        Map model = [result: result]
+        render model as JSON
     }
 
 }

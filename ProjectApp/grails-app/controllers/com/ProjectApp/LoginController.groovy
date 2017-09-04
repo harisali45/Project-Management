@@ -18,7 +18,7 @@ class LoginController {
 
         def form = converterService.convertToMap(loginCommand,props)
 
-        def resp = rest.post("${grailsApplication.config.backEnd}access/login.json") {
+        def resp = rest.post("${grailsApplication.config.backEnd}access/login") {
             contentType("application/x-www-form-urlencoded")
             body(form)
         }
@@ -67,7 +67,6 @@ class LoginController {
         } else {
             flash.message = result.message
         }
-        log.info "${result}"
         redirect action: "showForgotPassword", params: model
     }
 }

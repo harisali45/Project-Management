@@ -28,7 +28,6 @@ class UserController {
 
         if ( resp.json ) {
             resp.json.errors.each { error ->
-                log.info "message: ${error.message}"
                 flash.message = error.message
             }
             redirect action: "showSignUp", params: [signUpCommand: signUpCommand]
@@ -47,20 +46,21 @@ class UserController {
     }
 
     def save(SignUpCommand user) {
+        def form = converterService.convertToMap(user, ["name","email"])
+        form.add("id", "${session.userId}".toString())
         RestResponse resp = rest.post("${grailsApplication.config.backEnd}user/updateDetails") {
             contentType("application/x-www-form-urlencoded")
-            body(converterService.convertToMap(user, ["name","email"]).add("id", "${session.userId}"))
+            body(form)
         }
         if ( resp.json?.errors ) {
             resp.json.errors.each { error ->
-                log.info "message: ${error.message}"
                 flash.message = error.message
             }
             redirect action: "show", params: [changePasswordCommand: changePasswordCommand]
         } else {
             session.putAt("name",user.name)
             session.putAt("email",user.email)
-            flash.message = g.message(code: "save.successful", params: ["Changes"])
+            flash.message = g.message(code: "save.successful", args: ["Changes"])
             redirect action: "show"
         }
     }
@@ -68,21 +68,24 @@ class UserController {
     def changePassword(ChangePasswordCommand changePasswordCommand) {
 
         if(!changePasswordCommand.validate()) {
-
-        }
-        RestResponse resp = rest.put("${grailsApplication.config.backEnd}user/update") {
-            contentType("application/x-www-form-urlencoded")
-            body(converterService.convertToMap(changePasswordCommand, ["password"]).add("id", "${session.userId}"))
-        }
-        if ( resp.json?.errors ) {
-            resp.json.errors.each { error ->
-                log.info "message: ${error.message}"
-                flash.message = error.message
-            }
+            flash.message = g.message(code: "default.check.errors")
+            flash.error = true
             redirect action: "show", params: [changePasswordCommand: changePasswordCommand]
-        } else {
+            return
+        }
+        def form = converterService.convertToMap(changePasswordCommand, ["password", "newPassword"])
+        form.add("id", "${session.userId}".toString())
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}user/updatePassword") {
+            contentType("application/x-www-form-urlencoded")
+            body(form)
+        }
+        if ( resp.json.result.success ) {
             flash.message = g.message(code: "user.password.changed")
             redirect action: "show"
+        } else {
+            flash.message = resp.json.result.message
+            flash.error = true
+            redirect action: "show", params: [changePasswordCommand: changePasswordCommand]
         }
 
     }
@@ -98,7 +101,6 @@ class UserController {
         }
         if ( resp.json?.errors ) {
             resp.json.errors.each { error ->
-                log.info "message: ${error.message}"
                 flash.message = error.message
             }
             redirect action: "show"

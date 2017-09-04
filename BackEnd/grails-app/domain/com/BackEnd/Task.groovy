@@ -23,6 +23,7 @@ class Task {
         created nullable: false
         updated nullable: true
         assignedTo nullable: true
+        comment nullable: true
     }
 
     static mapping = {

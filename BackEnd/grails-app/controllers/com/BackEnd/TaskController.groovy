@@ -10,7 +10,6 @@ import grails.transaction.Transactional
 
 class TaskController extends RestfulController {
 
-    //static allowedMethods = [list: "POST", save: "POST", update: "PUT", delete: "DELETE"]
     static responseFormats = ['json']
 
     def errorService
@@ -52,7 +51,7 @@ class TaskController extends RestfulController {
         } else {
             responseMessage.success = true
         }
-        Map model = [result : responseMessage]
+        Map model = [result : responseMessage, id: task.id]
         render model as JSON
     }
 /*
@@ -61,30 +60,5 @@ class TaskController extends RestfulController {
 
         }
 
-    }*/
-
-   /* @Transactional
-    def update(Task task) {
-        if (task == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        if (task.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond task.errors, view:'edit'
-            return
-        }
-
-        task.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'task.label', default: 'Task'), task.id])
-                redirect task
-            }
-            '*'{ respond task, [status: OK] }
-        }
     }*/
 }

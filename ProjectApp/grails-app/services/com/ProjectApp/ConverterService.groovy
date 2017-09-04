@@ -15,7 +15,6 @@ class ConverterService {
                 form.add(prop.toString(), obj.getAt(prop).toString())
             }
         }
-        log.info "${form}"
         form
     }
 

@@ -49,32 +49,36 @@ class TaskController {
         RestResponse resp
         if(!task.id) {
             task.reportedBy = session.getProperty("userId")
+            def form = converterService.convertToMap(task, ["title", "description","reportedBy","project"])
+            form.add("assignedTo",params.assignedTo)
             resp = rest.post("${grailsApplication.config.backEnd}task/save") {
                 contentType("application/x-www-form-urlencoded")
-                body(converterService.convertToMap(task, ["title", "description","reportedBy","project"])
-                      .add("assignedTo",params.assignedTo) )
+                body(form)
             }
-            log.info "${resp}"
+            if(resp.json.result.success) {
+                task.id = resp.json.result.id
+                flash.message = g.message(code:"save.successful", args: ["Task"])
+            } else {
+                flash.message = resp.json.result.message
+                flash.error = true
+            }
         } else {
+            def form = converterService.convertToMap(task, ["id","title", "description","status"])
+            form.add("assignedTo",params.assignedTo)
             resp = rest.put("${grailsApplication.config.backEnd}task/update") {
                 contentType("application/x-www-form-urlencoded")
-                body(converterService.convertToMap(task, ["id", "title", "description", "status"])
-                        .add("assignedTo",params.assignedTo) )
+                body(form)
             }
-        }
-        if(resp.json?.errors) {
+            if(resp.json?.errors) {
             flash.message = ""
-            resp.json.errors.each {error ->
+            resp.json.errors.each { error ->
                 flash.message = "${flash.message}${error.message}\n"
             }
             flash.error = true
         } else {
-            if(!task.id) {
-                String showUrl = resp.headers.location
-                task.id = Long.parseLong("${showUrl.charAt(showUrl.lastIndexOf("/")+1)}")
-            }
             flash.message = g.message(code:"save.successful", args: ["Task"])
         }
+            }
         redirect action: "edit", params: [taskId: task.id]
     }
 

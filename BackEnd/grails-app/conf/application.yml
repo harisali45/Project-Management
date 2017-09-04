@@ -101,16 +101,20 @@ hibernate:
 dataSource:
     pooled: true
     jmxExport: true
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+#    driverClassName: org.h2.Driver
+    driverClassName: org.mariadb.jdbc.Driver
+    username: root
+    password: root
+    maxOpenPreparedStatements: -1
 
 environments:
     development:
         frontEnd: localhost:8010/
         dataSource:
-            dbCreate: create-drop
-            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            dbCreate: update
+#            url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            url: jdbc:mysql://localhost/projectManagement?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true
+            logSql: false
     test:
         dataSource:
             dbCreate: update

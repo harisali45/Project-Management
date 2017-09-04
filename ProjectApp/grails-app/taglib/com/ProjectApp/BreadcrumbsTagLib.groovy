@@ -1,8 +1,6 @@
 package com.ProjectApp
 
 class BreadcrumbsTagLib {
-    //static defaultEncodeAs = [taglib:'html']
-    //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
 
     static namespace = 'breadcrumb'
 
@@ -23,13 +21,10 @@ class BreadcrumbsTagLib {
                     BreadcrumbUrl popped
                     while (breadcrumb != popped) {
                         popped = urls.pop()
-                        log.info "popping ${popped.title}"
-                        log.info "is equal ${popped == breadcrumb}"
                     }
                 }
             }
         }
-        log.info "found: ${urls.toList().contains(breadcrumb)}"
         urls.push(breadcrumb)
 
         //render breadcrumb

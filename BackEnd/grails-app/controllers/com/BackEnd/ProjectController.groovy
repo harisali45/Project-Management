@@ -39,8 +39,24 @@ class ProjectController extends RestfulController {
         render model as JSON
     }
 
-    def list(){
-        Map model = [projects: Project.getAll()]
+    def list(User user){
+        def p = params
+        def projects = ProjectUser.findAllByUser(user)*.project
+        Map model = [projects: projects]
+        render model as JSON
+    }
+
+    def save() {
+        Project project = new Project(params)
+        ResponseMessage responseMessage = new ResponseMessage()
+        if( !project.save(flush: true) ){
+            responseMessage.message = errorService.getErrorMsg(project)
+        } else {
+            ProjectUser projectUser = new ProjectUser(user: project.owner, project: project, owner: true )
+            projectUser.save(flush: true)
+            responseMessage.success = true
+        }
+        Map model = [result : responseMessage, id: project.id]
         render model as JSON
     }
 
