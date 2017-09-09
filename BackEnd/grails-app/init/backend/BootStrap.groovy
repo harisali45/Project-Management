@@ -4,8 +4,10 @@ import com.BackEnd.*
 
 class BootStrap {
 
+    def springSecurityService
+
     def init = { servletContext ->
-        /*User haris=new User (username: "haris", name: "Haris",email: "haris@yallacompare.com", password: "haris")
+        User haris=new User (username: "haris", name: "Haris",email: "haris@yallacompare.com", password: "haris")
         haris.save(flush : true, failOnError: true)
         User bob=new User (username: "bob", name: "Bob",email: "bob@yallacompare.com", password: "bob")
         bob.save(flush : true, failOnError: true)
@@ -27,7 +29,13 @@ class BootStrap {
 
         new ProjectUser(project: mobileApp, user: haris).save(flush:true)
         new ProjectUser(project: mobileApp, user: bob).save(flush:true)
-        new ProjectUser(project: mobileApp, user: matthew).save(flush:true)*/
+        new ProjectUser(project: mobileApp, user: matthew).save(flush:true)
+
+        Role sr = new Role(authority: "ROLE_USER")
+        sr.save(flush: true, failOnError: true)
+        new UserRole(user: haris, role: sr ).save(flush: true, failOnError: true)
+
+        springSecurityService.clearCachedRequestmaps()
     }
     def destroy = {
     }

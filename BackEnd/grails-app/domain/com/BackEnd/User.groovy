@@ -1,13 +1,22 @@
 package com.BackEnd
 
+import grails.compiler.GrailsCompileStatic
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+
+@GrailsCompileStatic
+@EqualsAndHashCode(includes='username')
+@ToString(includes='username', includeNames=true, includePackage=false)
 class User {
 
     String username
     String name
     String email
-    UserStatusEnum userStatus = UserStatusEnum.active
-    Integer deleteFlag = 0
     String password
+    boolean enabled = true
+    boolean accountExpired = false
+    boolean accountLocked = false
+    boolean passwordExpired = false
 
     static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment/*, contributor: Project*/]
     static mappedBy = [
@@ -17,26 +26,15 @@ class User {
         project: 'owner'*/
     ]
 
+    Set<Role> getAuthorities() {
+        (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
+    }
+
     static constraints = {
         email email:true, unique: true, nullable: false
-        name validator: { val, obj ->
-            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val)) {
-                return ["default.required", "Name"]
-            }
-            return true
-        }
-        username nullable: true, unique: true, validator: { val, obj ->
-            if(obj.userStatus != com.BackEnd.UserStatusEnum.initiated && !(val)) {
-                return ["default.required", "Username"]
-            }
-            return true
-        }
-        password nullable: true, validator: { val, obj ->
-            if(obj.password != com.BackEnd.UserStatusEnum.initiated && !(val)) {
-                return ["default.required", "Password"]
-            }
-            return true
-        }
+        name nullable: true
+        username nullable: true, unique: true
+        password nullable: true, password: true
     }
 
     static mapping = {

@@ -1,9 +1,12 @@
 package com.ProjectApp
 
+import grails.plugins.rest.client.RestResponse
+
 class LoginController {
 
     def rest
     def converterService
+    def getObjectsService
 
     def index (LoginCommand loginCommand) {
 
@@ -18,21 +21,23 @@ class LoginController {
 
         def form = converterService.convertToMap(loginCommand,props)
 
-        def resp = rest.post("${grailsApplication.config.backEnd}access/login") {
-            contentType("application/x-www-form-urlencoded")
-            body(form)
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}api/login") {
+            contentType("application/json")
+            body("{'username':'${loginCommand.username}','password':'${loginCommand.password}'")
         }
-        def result = resp.json.getAt("result")
-        if (result.success) {
-            def user = resp.json.user
+        log.info "${resp.properties}"
+        //def result = resp.json.getAt("result")
+        if (resp.headers.Location.toString().contains("error")) {
+            flash.message = g.message(code: "login.invalid")
+            redirect action: "index", params: [loginCommand: loginCommand]
+        } else {
+            session.putAt("backEndCookie", resp.headers.SET_COOKIE)
+            def user = getObjectsService.getUserByUsername(loginCommand.username , loginCommand.password)
             session.putAt("name",user.name)
             session.putAt("username",loginCommand.username)
             session.putAt("email",user.email)
             session.putAt("userId",user.id)
             redirect controller: "project", action: "list", params: [userId: user.id]
-        } else {
-            flash.message = result.message
-            redirect action: "index", params: [loginCommand: loginCommand]
         }
     }
 

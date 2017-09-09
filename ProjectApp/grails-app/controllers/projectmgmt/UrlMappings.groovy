@@ -9,7 +9,7 @@ class UrlMappings {
             }
         }
 
-        "/"(controller: "project", action: "list")
+        "/"(view: "/sign-in.gsp")
 
         name login: "/login" (
             controller: "login",

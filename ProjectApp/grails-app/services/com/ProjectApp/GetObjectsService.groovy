@@ -19,6 +19,19 @@ class GetObjectsService {
         user
     }
 
+    def getUserByUsername(String username, String password ) {
+
+        RestResponse resp = rest.get("${Holders.config.backEnd}/user/getUserByUsername?username=${username}") {
+            auth(username, password)
+        }
+        def user = [
+                id: resp.json.id,
+                name: resp.json.name,
+                email: resp.json.email
+        ]
+        user
+    }
+
     def getUsersInProject (Long projectId) {
         RestResponse resp = rest.get("${Holders.config.backEnd}project/getUsers?id=${projectId}")
         resp.json.users

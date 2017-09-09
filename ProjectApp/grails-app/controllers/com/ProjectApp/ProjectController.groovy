@@ -16,7 +16,8 @@ class ProjectController {
     def errorService
 
 
-    def list (Integer userId) {
+    def list () {
+        Long userId = session.userId
         def resp = rest.get("${grailsApplication.config.backEnd}project/list?id=${userId}")
         def projects = resp.json.getAt("projects")
         def model = [projects : projects]
@@ -24,7 +25,6 @@ class ProjectController {
     }
 
     def edit (Integer projectId) {
-        session.putAt("userId","1")
         def usersInProject, usersNotInProject
         ProjectCommand projectCommand = new ProjectCommand()
         if(projectId) {

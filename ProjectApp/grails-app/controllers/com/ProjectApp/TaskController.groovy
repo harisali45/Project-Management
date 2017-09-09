@@ -13,10 +13,14 @@ class TaskController {
     def getObjectsService
 
     def list (Integer projectId) {
+        def projects = rest.get("${grailsApplication.config.backEnd}project/list?id=${session.userId}").json.projects
+        if(!projectId) {
+            projectId = projects?.get(0)?.id
+        }
         def resp = rest.get("${grailsApplication.config.backEnd}task/list?projectId=${projectId}")
         def tasks = resp.json.tasks
         def project = resp.json.project
-        def projects = rest.get("${grailsApplication.config.backEnd}project/list").json.projects
+
         def model = [tasks : tasks, project: project, projects: projects]
         render view: "/task/list", model: model
     }

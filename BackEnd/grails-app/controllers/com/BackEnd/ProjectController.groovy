@@ -1,5 +1,6 @@
 package com.BackEnd
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -18,6 +19,7 @@ class ProjectController extends RestfulController {
     ProjectController() {
         super(Project)
     }
+
 
     def show() {
         Project project = Project.findById(params.projectId)
@@ -74,9 +76,14 @@ class ProjectController extends RestfulController {
     }
 
     def removeUser(Integer userId, Integer projectId) {
-        ProjectUser pu = ProjectUser.findByUserAndProject(User.get(params.userId), Project.get(params.projectId))
+        User user = User.get(params.userId)
+        Project project = Project.get(params.projectId)
+        ProjectUser pu = ProjectUser.findByUserAndProject( user , project )
         ResponseMessage result = new ResponseMessage()
         pu.delete(flush: true)
+        def tasks = Task.findAllByAssignedToAndProject(user, project)
+        tasks*.assignedTo = null
+        tasks*.save(flush: true)
         result.success = true
         Map model = [result: result]
         render model as JSON

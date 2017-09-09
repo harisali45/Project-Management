@@ -1,6 +1,7 @@
 package com.BackEnd
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 
 class UserController {
 
@@ -21,6 +22,18 @@ class UserController {
                 "email"
             }
             eq("id", userId)
+        }
+        render userList.first() as JSON
+    }
+
+    def getUserByUsername(String username) {
+        List userList = User.createCriteria().list {
+            projections {
+                "id"
+                "name"
+                "email"
+            }
+            eq("username", username)
         }
         render userList.first() as JSON
     }
