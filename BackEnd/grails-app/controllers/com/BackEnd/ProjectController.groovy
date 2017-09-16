@@ -9,6 +9,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
 
+@Secured("ROLE_USER")
 class ProjectController extends RestfulController {
 
     static responseFormats= ['json']

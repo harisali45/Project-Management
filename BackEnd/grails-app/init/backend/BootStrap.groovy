@@ -4,8 +4,6 @@ import com.BackEnd.*
 
 class BootStrap {
 
-    def springSecurityService
-
     def init = { servletContext ->
         User haris=new User (username: "haris", name: "Haris",email: "haris@yallacompare.com", password: "haris")
         haris.save(flush : true, failOnError: true)
@@ -35,7 +33,7 @@ class BootStrap {
         sr.save(flush: true, failOnError: true)
         new UserRole(user: haris, role: sr ).save(flush: true, failOnError: true)
 
-        springSecurityService.clearCachedRequestmaps()
+        log.debug "users: ${User.list()}"
     }
     def destroy = {
     }

@@ -1,56 +1,59 @@
 package com.BackEnd
 
-import grails.compiler.GrailsCompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-@GrailsCompileStatic
-@EqualsAndHashCode(includes='username')
-@ToString(includes='username', includeNames=true, includePackage=false)
-class User {
+/*@EqualsAndHashCode(includes='username')
+@ToString(includes='username', includeNames=true, includePackage=false)*/
+class User implements Serializable {
 
-    String username
-    String name
-    String email
-    String password
-    boolean enabled = true
-    boolean accountExpired = false
-    boolean accountLocked = false
-    boolean passwordExpired = false
+	private static final long serialVersionUID = 1
 
-    static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment/*, contributor: Project*/]
-    static mappedBy = [
-        reportedBy : 'reportedBy',
-        assignedTo : 'assignedTo',
-        /*contributor: 'contributor',
-        project: 'owner'*/
-    ]
+	transient springSecurityService
 
-    Set<Role> getAuthorities() {
-        (UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
-    }
+	String username
+	String password
+	boolean enabled = true
+	boolean accountExpired = false
+	boolean accountLocked = false
+	boolean passwordExpired = false
 
-    static constraints = {
-        email email:true, unique: true, nullable: false
-        name nullable: true
-        username nullable: true, unique: true
-        password nullable: true, password: true
-    }
+	String name
+	String email
 
-    static mapping = {
-        userStatus defaultValue : 1
-        deleteFlag defaultValue : 0
-    }
-}
+	static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment, contributor: Project]
+	static mappedBy = [
+			reportedBy : 'reportedBy',
+			assignedTo : 'assignedTo'
+	]
 
-public enum UserStatusEnum {
-    initiated (0),
-    active (1),
-    inactive (2)
+	Set<Role> getAuthorities() {
+		UserRole.findAllByUser(this)*.role
+	}
 
-    Integer status
+	def beforeInsert() {
+		encodePassword()
+	}
 
-    UserStatusEnum (Integer status) {
-        this.status = status
-    }
+	def beforeUpdate() {
+		if (isDirty('password')) {
+			encodePassword()
+		}
+	}
+
+	protected void encodePassword() {
+		//password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+		password
+	}
+
+	static transients = ['springSecurityService']
+
+	static constraints = {
+		password blank: false, password: true
+		username blank: false, unique: true
+	}
+
+	static mapping = {
+		password column: '`password`'
+	}
 }

@@ -1,7 +1,6 @@
 package com.BackEnd
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.annotation.Secured
 
 class UserController {
 

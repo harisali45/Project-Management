@@ -111,7 +111,7 @@ dataSource:
     driverClassName: org.h2.Driver
 #    driverClassName: org.mariadb.jdbc.Driver
     username: sa
-    password: sa
+    password:
     maxOpenPreparedStatements: -1
 
 environments:
