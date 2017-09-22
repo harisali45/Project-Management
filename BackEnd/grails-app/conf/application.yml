@@ -14,13 +14,13 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
-    plugin:
-      springsecurity:
-        rest:
-          login:
-            useJsonCredentials: true
-            usernamePropertyName: true
-            passwordPropertyName: true
+#    plugin:
+#      springsecurity:
+#        rest:
+#          login:
+#            useJsonCredentials: true
+#            usernamePropertyName: true
+#            passwordPropertyName: true
 info:
     app:
         name: '@info.app.name@'

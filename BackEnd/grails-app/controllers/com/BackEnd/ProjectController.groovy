@@ -1,6 +1,6 @@
 package com.BackEnd
 
-import grails.plugin.springsecurity.annotation.Secured
+//import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -9,13 +9,14 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.converters.JSON
 
-@Secured("ROLE_USER")
+//@Secured("ROLE_USER")
 class ProjectController extends RestfulController {
 
     static responseFormats= ['json']
 
     def emailService
     def errorService
+    def projectService
 
     ProjectController() {
         super(Project)
@@ -77,28 +78,12 @@ class ProjectController extends RestfulController {
     }
 
     def removeUser(Integer userId, Integer projectId) {
-        User user = User.get(params.userId)
-        Project project = Project.get(params.projectId)
-        ProjectUser pu = ProjectUser.findByUserAndProject( user , project )
-        ResponseMessage result = new ResponseMessage()
-        pu.delete(flush: true)
-        def tasks = Task.findAllByAssignedToAndProject(user, project)
-        tasks*.assignedTo = null
-        tasks*.save(flush: true)
-        result.success = true
-        Map model = [result: result]
+        Map model = projectService.removeUser(userId, projectId)
         render model as JSON
     }
 
     def addUser(Integer userId, Integer projectId) {
-        ProjectUser projectUser = new ProjectUser(user: User.get(userId), project: Project.get(projectId))
-        ResponseMessage result = new ResponseMessage()
-        if(!projectUser.save(flush: true)) {
-            result.message = errorService.getErrorMsg(projectUser)
-        } else {
-            result.success = true
-        }
-        Map model = [result: result]
+        Map model = projectService.addUser(userId, projectId)
         render model as JSON
     }
 

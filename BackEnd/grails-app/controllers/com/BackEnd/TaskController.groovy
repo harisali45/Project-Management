@@ -12,6 +12,7 @@ class TaskController extends RestfulController {
     static responseFormats = ['json']
 
     def errorService
+    def notificationService
 
     TaskController() {
         super(Task)
@@ -49,6 +50,7 @@ class TaskController extends RestfulController {
             responseMessage.message = errorService.getErrorMsg(task)
         } else {
             responseMessage.success = true
+            notificationService.addNotification(task.project, "New task ${task.title} added in ${task.project.title}")
         }
         Map model = [result : responseMessage, id: task.id]
         render model as JSON

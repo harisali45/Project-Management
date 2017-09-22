@@ -63,4 +63,9 @@ class GetObjectsService {
         comment
     }
 
+    def getNotifications(Long userId) {
+        RestResponse resp = rest.get("${Holders.config.backEnd}/notification/getNotifications?userId=${userId}")
+        resp.json.notifications
+    }
+
 }

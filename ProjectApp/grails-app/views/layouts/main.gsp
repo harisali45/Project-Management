@@ -70,6 +70,32 @@
             <a class="navbar-brand" >PROJECT MANAGEMENT</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                   aria-expanded="true">
+                    <i class="material-icons">notifications</i>
+                    <span class="label-count">${session.notifications?.size()}</span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="header">NOTIFICATIONS</li>
+                    <li class="body">
+                        <ul class="menu">
+                            <g:each in="${session.notifications}" var="notification" >
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <div class="icon-circle bg-light-green">
+                                            <i class="material-icons">person_add</i>
+                                        </div>
+                                        <div class="menu-info">
+                                            <h4>${notification?.message}</h4>
+                                        </div>
+                                    </a>
+                                </li>
+                            </g:each>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
             <li class="pull-right">
                 <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"
                    role="button" aria-expanded="true">

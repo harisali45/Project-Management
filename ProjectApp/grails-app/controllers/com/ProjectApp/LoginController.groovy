@@ -9,10 +9,8 @@ class LoginController {
     def getObjectsService
 
     def index (LoginCommand loginCommand) {
-
         Map model = [loginCommand: loginCommand]
         render view: "/sign-in", model: model
-
     }
 
     def login(LoginCommand loginCommand) {
@@ -21,12 +19,10 @@ class LoginController {
 
         def form = converterService.convertToMap(loginCommand,props)
 
-        RestResponse resp = rest.post("${grailsApplication.config.backEnd}api/login") {
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}access/login") {
             contentType("application/json")
             body("{'username':'${loginCommand.username}','password':'${loginCommand.password}'")
         }
-        log.info "${resp.properties}"
-        //def result = resp.json.getAt("result")
         if (resp.headers.Location.toString().contains("error")) {
             flash.message = g.message(code: "login.invalid")
             redirect action: "index", params: [loginCommand: loginCommand]
@@ -37,6 +33,7 @@ class LoginController {
             session.putAt("username",loginCommand.username)
             session.putAt("email",user.email)
             session.putAt("userId",user.id)
+            session.putAt("notifications", getObjectsService.getNotifications(user.id))
             redirect controller: "project", action: "list", params: [userId: user.id]
         }
     }

@@ -21,7 +21,7 @@ class User implements Serializable {
 	String name
 	String email
 
-	static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment, contributor: Project]
+	static hasMany = [project: Project, reportedBy: Task, assignedTo: Task, comment: Comment, contributor: Project, notification: Notification]
 	static mappedBy = [
 			reportedBy : 'reportedBy',
 			assignedTo : 'assignedTo'

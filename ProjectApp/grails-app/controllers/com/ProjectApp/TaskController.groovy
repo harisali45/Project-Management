@@ -92,7 +92,7 @@ class TaskController {
             contentType("application/x-www-form-urlencoded")
             body(converterService.convertToMap(comment, ["content", "user", "task"]))
         }
-        if(resp.json?.errors) {
+        if(!resp.json.result?.success) {
             flash.message = errorService.getErrorMsg(resp.json)
             flash.error = true
         }
