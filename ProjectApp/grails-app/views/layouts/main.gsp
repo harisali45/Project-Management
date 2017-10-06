@@ -26,6 +26,7 @@
     <asset:stylesheet src="theme-red.min.css"  />
     <asset:stylesheet src="font-awesome.min.css" />
     <asset:stylesheet src="custom.css" />
+    <asset:stylesheet src="bootstrap-material-datetimepicker.css"></asset:stylesheet>
 
     <g:layoutHead/>
 </head>
@@ -206,6 +207,8 @@
     <asset:javascript src="index.js" />
     <asset:javascript src="demo.js" />
     <asset:javascript src="bootstrap-notify.min.js" />
+    <asset:javascript src="moment.js" />
+    <asset:javascript src="bootstrap-material-datetimepicker.js"></asset:javascript>
     <asset:javascript src="application.js" />
 
 <g:if test="flash.message" >
@@ -220,6 +223,13 @@
         </script>
     </g:if>
 </g:if>
-
+<script type="text/javascript">
+    $('.datepicker').bootstrapMaterialDatePicker({
+        format: 'DD/MM/YYYY',
+        clearButton: true,
+        weekStart: 1,
+        time: false
+    });
+</script>
 </body>
 </html>

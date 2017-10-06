@@ -1,6 +1,6 @@
 package com.BackEnd
 
-/*import grails.plugin.springsecurity.SpringSecurityService*/
+import grails.plugin.springsecurity.SpringSecurityService
 import org.grails.datastore.mapping.core.Datastore
 import org.grails.datastore.mapping.engine.event.AbstractPersistenceEvent
 import org.grails.datastore.mapping.engine.event.AbstractPersistenceEventListener
@@ -15,7 +15,7 @@ import groovy.transform.CompileStatic
 class UserPasswordEncoderListener extends AbstractPersistenceEventListener {
 
     @Autowired
-    //SpringSecurityService springSecurityService
+    SpringSecurityService springSecurityService
 
     UserPasswordEncoderListener(final Datastore datastore) {
         super(datastore)
@@ -37,7 +37,6 @@ class UserPasswordEncoderListener extends AbstractPersistenceEventListener {
     }
 
     private String encodePassword(String password) {
-        //springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
-        password
+        springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
     }
 }

@@ -32,8 +32,13 @@
             <div class="body">
                 <ul class="list-group">
                     <g:each in="${tasks}" var="task">
-                    <li class="list-group-item">${task.title}
+                    <li class="list-group-item ">${task.title}
                         <div class="float-right keep-up">
+                            <g:if test="${ task.deadline && task.deadline < new Date() }">
+                                <a class="btn btn-danger btn-xs" href="">
+                                    <i class="material-icons">error_outline</i>
+                                </a>
+                            </g:if>
                         <a class="btn btn-primary btn-xs" href="${g.createLink(controller:"task", action: "edit",params: [taskId:task.id])}">
                             <i class="material-icons">format_list_bulleted</i><span>Details</span>
                         </a>

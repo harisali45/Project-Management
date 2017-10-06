@@ -18,7 +18,10 @@ class ProjectController {
 
     def list () {
         Long userId = session.userId
-        def resp = rest.get("${grailsApplication.config.backEnd}project/list?id=${userId}")
+        def resp = rest.get("${grailsApplication.config.backEnd}project/list?id=${userId}") {
+            accept("application/json")
+            header('Authorization', "Bearer ${session.accessToken}")
+        }
         def projects = resp.json.getAt("projects")
         def model = [projects : projects]
         render view: "/project/list", model: model
@@ -28,7 +31,9 @@ class ProjectController {
         def usersInProject, usersNotInProject
         ProjectCommand projectCommand = new ProjectCommand()
         if(projectId) {
-            def resp = rest.get("${grailsApplication.config.backEnd}project/show?projectId=${projectId}")
+            def resp = rest.get("${grailsApplication.config.backEnd}project/show?projectId=${projectId}") {
+                header('Authorization', "Bearer ${session.accessToken}")
+            }
             projectCommand.title = resp.json.project.title
             projectCommand.description = resp.json.project.description
             projectCommand.id = resp.json.project.id
@@ -48,6 +53,7 @@ class ProjectController {
             projectCommand.owner = session.getProperty("userId")
             resp = rest.post("${grailsApplication.config.backEnd}project/save") {
                 contentType("application/x-www-form-urlencoded")
+                header('Authorization', "Bearer ${session.accessToken}")
                 body(converterService.convertToMap(projectCommand, ["id", "title", "description","owner"]))
             }
             if(resp.json.result.success) {
@@ -61,6 +67,7 @@ class ProjectController {
             }
         } else {
             resp = rest.put("${grailsApplication.config.backEnd}project/update") {
+                header('Authorization', "Bearer ${session.accessToken}")
                 contentType("application/x-www-form-urlencoded")
                 body(converterService.convertToMap(projectCommand, ["id", "title", "description"]))
             }
@@ -82,6 +89,7 @@ class ProjectController {
         form.add("userId", userId.toString())
         form.add("projectId", projectId.toString())
         RestResponse resp = rest.post("${grailsApplication.config.backEnd}project/removeUser") {
+            header('Authorization', "Bearer ${session.accessToken}")
             contentType("application/x-www-form-urlencoded")
             body(form)
         }
@@ -99,6 +107,7 @@ class ProjectController {
         form.add("userId", newUser.toString())
         form.add("projectId", projectId.toString())
         RestResponse resp = rest.post("${grailsApplication.config.backEnd}project/addUser") {
+            header('Authorization', "Bearer ${session.accessToken}")
             contentType("application/x-www-form-urlencoded")
             body(form)
         }

@@ -10,7 +10,7 @@ class AccessController {
 
     def emailService
 
-    def login(){
+    /*def login(){
 
         String username = params.username
         String password = params.password
@@ -36,7 +36,7 @@ class AccessController {
         Map model = [result: response, user: user]
         render model as JSON
 
-    }
+    }*/
 
     def forgotPassword() {
         ResponseMessage response = new ResponseMessage()

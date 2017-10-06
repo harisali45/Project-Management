@@ -1,5 +1,8 @@
 package com.BackEnd
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 class Task {
 
     String title
@@ -10,7 +13,7 @@ class Task {
     Date updated = new Date()
     Integer deleteFlag = 0
     String status = TaskStatusEnum.ONGOING
-
+    Date deadline
 
     static hasMany = [comment: Comment]
     static hasOne = [reportedBy: com.BackEnd.User, assignedTo: com.BackEnd.User, project: Project]
@@ -24,11 +27,17 @@ class Task {
         updated nullable: true
         assignedTo nullable: true
         comment nullable: true
+        deadline nullable: true
     }
 
     static mapping = {
         deleteFlag defaultValue : 0
     }
+
+    /*void setDeadline(String deadline){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy")
+        this.deadline = simpleDateFormat.parse(deadline)
+    }*/
 }
 
 enum TaskStatusEnum {

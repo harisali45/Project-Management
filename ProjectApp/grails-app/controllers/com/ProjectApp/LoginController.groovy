@@ -19,15 +19,19 @@ class LoginController {
 
         def form = converterService.convertToMap(loginCommand,props)
 
-        RestResponse resp = rest.post("${grailsApplication.config.backEnd}access/login") {
+        RestResponse resp = rest.post("${grailsApplication.config.backEnd}api/login") {
             contentType("application/json")
-            body("{'username':'${loginCommand.username}','password':'${loginCommand.password}'")
+            accept ("application/json")
+            json {
+                username = loginCommand.username
+                password = loginCommand.password
+            }
         }
-        if (resp.headers.Location.toString().contains("error")) {
+        if (resp.status != 200) {
             flash.message = g.message(code: "login.invalid")
             redirect action: "index", params: [loginCommand: loginCommand]
         } else {
-            session.putAt("backEndCookie", resp.headers.SET_COOKIE)
+            session.putAt("accessToken", resp.json.access_token)
             def user = getObjectsService.getUserByUsername(loginCommand.username , loginCommand.password)
             session.putAt("name",user.name)
             session.putAt("username",loginCommand.username)

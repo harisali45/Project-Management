@@ -13,12 +13,22 @@ class TaskController {
     def getObjectsService
 
     def list (Integer projectId) {
-        def projects = rest.get("${grailsApplication.config.backEnd}project/list?id=${session.userId}").json.projects
+        RestResponse resp = rest.get("${grailsApplication.config.backEnd}project/list?id=${session.userId}") {
+            header('Authorization', "Bearer ${session.accessToken}")
+        }
+        def projects = resp.json.projects
         if(!projectId) {
             projectId = projects?.get(0)?.id
         }
-        def resp = rest.get("${grailsApplication.config.backEnd}task/list?projectId=${projectId}")
+        resp = rest.get("${grailsApplication.config.backEnd}task/list?projectId=${projectId}") {
+            header('Authorization', "Bearer ${session.accessToken}")
+        }
         def tasks = resp.json.tasks
+        tasks.each { task ->
+            if(task.deadline) {
+                task.deadline = simpleDateFormat.parse(task.deadline)
+            }
+        }
         def project = resp.json.project
 
         def model = [tasks : tasks, project: project, projects: projects]
@@ -28,7 +38,9 @@ class TaskController {
     def edit (Integer taskId, CommentCommand comment, Long projectId) {
         TaskCommand task = new TaskCommand()
         if(taskId) {
-            RestResponse resp = rest.get("${grailsApplication.config.backEnd}task/show/${taskId}")
+            RestResponse resp = rest.get("${grailsApplication.config.backEnd}task/show/${taskId}") {
+                header('Authorization', "Bearer ${session.accessToken}")
+            }
             task.id = resp.json.id
             task.title = resp.json.title
             task.description = resp.json.description
@@ -38,6 +50,9 @@ class TaskController {
             task.assignedTo = resp.json.assignedTo?getObjectsService.getUser(resp.json.assignedTo.id) : resp.json.assignedTo
             task.project = resp.json.project.id
             task.status = resp.json.status
+            if(resp.json.deadline) {
+                task.deadline = simpleDateFormat.parse(resp.json.deadline)
+            }
         } else {
             task.project = projectId
         }
@@ -53,9 +68,10 @@ class TaskController {
         RestResponse resp
         if(!task.id) {
             task.reportedBy = session.getProperty("userId")
-            def form = converterService.convertToMap(task, ["title", "description","reportedBy","project"])
+            def form = converterService.convertToMap(task, ["title", "description","reportedBy","project","deadline"])
             form.add("assignedTo",params.assignedTo)
             resp = rest.post("${grailsApplication.config.backEnd}task/save") {
+                header('Authorization', "Bearer ${session.accessToken}")
                 contentType("application/x-www-form-urlencoded")
                 body(form)
             }
@@ -67,9 +83,10 @@ class TaskController {
                 flash.error = true
             }
         } else {
-            def form = converterService.convertToMap(task, ["id","title", "description","status"])
+            def form = converterService.convertToMap(task, ["id","title", "description","status","deadline"])
             form.add("assignedTo",params.assignedTo)
             resp = rest.put("${grailsApplication.config.backEnd}task/update") {
+                header('Authorization', "Bearer ${session.accessToken}")
                 contentType("application/x-www-form-urlencoded")
                 body(form)
             }
@@ -89,6 +106,7 @@ class TaskController {
     def postComment (CommentCommand comment) {
         comment.user = session.getAt("userId")
         RestResponse resp = rest.post("${grailsApplication.config.backEnd}comment/save") {
+            header('Authorization', "Bearer ${session.accessToken}")
             contentType("application/x-www-form-urlencoded")
             body(converterService.convertToMap(comment, ["content", "user", "task"]))
         }

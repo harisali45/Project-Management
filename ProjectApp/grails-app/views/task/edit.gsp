@@ -87,34 +87,23 @@
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
+                                    <label for="deadline">Deadline</label>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="datepicker form-control" placeholder="Select deadline"
+                                            id="deadline" name="deadline" value="${g.formatDate(format:"dd/MM/yyyy", date: task.deadline)}" ></input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row clearfix">
+                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label >Assigned To</label>
                                 </div>
                                 <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
-                                    %{--<div class="form-group">
-                                        <div class="btn-group bootstrap-select form-control show-tick">
-                                            <button type="button" class="btn dropdown-toggle btn-default"
-                                                    data-toggle="dropdown" title="${task.assignedTo?.name}" aria-expanded="false">
-                                                <span class="filter-option pull-left">${task.assignedTo?.name}</span>&nbsp;
-                                                <span class="bs-caret"><span class="caret"></span></span></button>
-                                            <div class="dropdown-menu open"
-                                                 style="max-height: 350px; overflow: hidden; min-height: 40px;">
-                                                <div class="bs-searchbox">
-                                                    <input type="text" class="form-control" autocomplete="off">
-                                                </div>
-                                                <ul class="dropdown-menu inner" role="menu" style="max-height: 300px; overflow-y: auto; min-height: 0px;">
-                                                    <g:each in="${usersInProject}" var="user">
-                                                    <li data-original-index="${index}" class="${(user.id == task.assignedTo?.id)?'selected active':''}">
-                                                        <a tabindex="0" class="" style="" data-tokens="null">
-                                                        <span class="text">${user.name}</span>
-                                                        <span class="glyphicon glyphicon-ok check-mark"></span>
-                                                        </a>
-                                                    </li>
-                                                    </g:each>
-                                                </ul>
-                                            </div>
-
-                                        </div>
-                                    </div>--}%
                                     <g:select id="assignedTo" name="assignedTo"
                                               from="${usersInProject}"
                                               value="${task.assignedTo?.id}"

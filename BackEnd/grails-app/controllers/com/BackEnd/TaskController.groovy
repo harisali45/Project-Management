@@ -32,6 +32,9 @@ class TaskController extends RestfulController {
     }
 
     def show(Task task) {
+        if(task.deadline) {
+            task.deadline += 1
+        }
         respond task
     }
 
@@ -46,7 +49,7 @@ class TaskController extends RestfulController {
     def save() {
         Task task = new Task(params)
         ResponseMessage responseMessage = new ResponseMessage()
-        if( !task.save(flush: true) ){
+        if( !task.save(flush: true) ) {
             responseMessage.message = errorService.getErrorMsg(task)
         } else {
             responseMessage.success = true
@@ -55,11 +58,15 @@ class TaskController extends RestfulController {
         Map model = [result : responseMessage, id: task.id]
         render model as JSON
     }
-/*
+
     def update(Task task) {
+        ResponseMessage responseMessage = new ResponseMessage()
         if(!task.save(flush: true)){
-
+            responseMessage.message = errorService.getErrorMsg(task)
+        } else {
+            responseMessage.success = true
         }
-
-    }*/
+        Map model = [result: responseMessage]
+        render model as JSON
+    }
 }

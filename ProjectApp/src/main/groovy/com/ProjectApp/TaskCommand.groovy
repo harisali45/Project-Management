@@ -1,6 +1,8 @@
 package com.ProjectApp
 
-class TaskCommand {
+import grails.validation.Validateable
+
+class TaskCommand implements Validateable {
 
     Long id
     String title
@@ -12,9 +14,12 @@ class TaskCommand {
     List comment
     Long project
     String status
+    Date deadline
 
     static constraints = {
         assignedTo nullable: true
         description nullable: true
+        deadline nullable: true
     }
+
 }

@@ -16,7 +16,9 @@
             <div class="body">
                 <ul class="list-group">
                     <g:each in="${projects}" var="project">
-                    <li class="list-group-item">${project.title} <span class="badge bg-pink">0 new</span></li>
+                    <li class="list-group-item">${project.title}
+
+                        <span class="badge bg-pink">0 new</span></li>
                     </g:each>
                 </ul>
             </div>
