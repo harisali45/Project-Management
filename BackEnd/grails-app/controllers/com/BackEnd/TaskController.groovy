@@ -1,6 +1,7 @@
 package com.BackEnd
 
 import grails.converters.JSON
+import grails.core.GrailsApplication
 import grails.rest.RestfulController
 import org.hibernate.FetchMode
 
@@ -23,10 +24,12 @@ class TaskController extends RestfulController {
         respond Task.list(params), model:[taskCount: Task.count()]
     }
 
-
     def list() {
         Project project = Project.get(params.projectId)
         def tasks = project.task.toList()
+        tasks.removeAll { task->
+            !task.active
+        }
         Map model = [tasks: tasks, project: project]
         render model as JSON
     }
@@ -53,7 +56,8 @@ class TaskController extends RestfulController {
             responseMessage.message = errorService.getErrorMsg(task)
         } else {
             responseMessage.success = true
-            notificationService.addNotification(task.project, "New task ${task.title} added in ${task.project.title}")
+            notificationService.addNotification(task.project, "New task ${task.title} added in ${task.project.title}",
+            "${grailsApplication.config.taskLink}${task.id}", grailsApplication.config.taskIcon )
         }
         Map model = [result : responseMessage, id: task.id]
         render model as JSON
@@ -66,6 +70,15 @@ class TaskController extends RestfulController {
         } else {
             responseMessage.success = true
         }
+        Map model = [result: responseMessage]
+        render model as JSON
+    }
+
+    def delete(Task task) {
+        ResponseMessage responseMessage = new ResponseMessage()
+        task.active = false
+        task.save(flush: true)
+        responseMessage.success = true
         Map model = [result: responseMessage]
         render model as JSON
     }

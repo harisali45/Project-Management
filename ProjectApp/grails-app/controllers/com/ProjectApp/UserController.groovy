@@ -8,6 +8,7 @@ class UserController {
 
     def rest
     def converterService
+    def errorService
 
     def showSignUp(SignUpCommand signUpCommand) {
         def model = [signUpCommand : signUpCommand]
@@ -17,6 +18,7 @@ class UserController {
     def signUp(SignUpCommand signUpCommand) {
         if(!signUpCommand.validate()) {
             def model = [signUpCommand : signUpCommand]
+            //flash.message = errorService.getErrorMsg(signUpCommand)
             redirect action: "showSignUp", params: model
             return
         }
@@ -26,14 +28,12 @@ class UserController {
             body(converterService.convertToMap(signUpCommand, ["name","password","username","email"]))
         }
 
-        if ( resp.json ) {
-            resp.json.errors.each { error ->
-                flash.message = error.message
-            }
-            redirect action: "showSignUp", params: [signUpCommand: signUpCommand]
-        } else {
+        if ( resp.json?.result.success ) {
             flash.message = g.message(code: "signUp.success")
-            redirect controller: "login", action: "index"
+            redirect controller: "login", action: "auth"
+        } else {
+            flash.message = resp.json.result.message
+            redirect action: "showSignUp", params: [signUpCommand: signUpCommand]
         }
     }
 
@@ -49,6 +49,7 @@ class UserController {
         def form = converterService.convertToMap(user, ["name","email"])
         form.add("id", "${session.userId}".toString())
         RestResponse resp = rest.post("${grailsApplication.config.backEnd}user/updateDetails") {
+            header('Authorization', "Bearer ${session.accessToken}")
             contentType("application/x-www-form-urlencoded")
             body(form)
         }
@@ -76,6 +77,7 @@ class UserController {
         def form = converterService.convertToMap(changePasswordCommand, ["password", "newPassword"])
         form.add("id", "${session.userId}".toString())
         RestResponse resp = rest.post("${grailsApplication.config.backEnd}user/updatePassword") {
+            header('Authorization', "Bearer ${session.accessToken}")
             contentType("application/x-www-form-urlencoded")
             body(form)
         }
@@ -96,6 +98,7 @@ class UserController {
         form.add("newUserName", newUserName)
         form.add("referrerId" , ''+session.userId)
         RestResponse resp = rest.put("${grailsApplication.config.backEnd}access/invite") {
+            header('Authorization', "Bearer ${session.accessToken}")
             contentType("application/x-www-form-urlencoded")
             body(form)
         }

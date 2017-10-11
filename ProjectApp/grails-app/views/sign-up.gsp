@@ -68,7 +68,7 @@
                 <button class="btn btn-block btn-lg bg-pink waves-effect" type="submit">SIGN UP</button>
 
                 <div class="m-t-25 m-b--5 align-center">
-                    <a href="/login">${g.message(code: "user.registered")}</a>
+                    <a href="/">${g.message(code: "user.registered")}</a>
                 </div>
             </g:form>
             <g:if test="${flash.message}">

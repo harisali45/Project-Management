@@ -63,7 +63,6 @@
                                 </div>
                             </div>
 
-                            <g:if test="${task.assignedTo?.id == session.userId}">
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
                                     <label >Status</label>
@@ -83,7 +82,6 @@
                                     </div>
                                 </div>
                             </div>
-                            </g:if>
 
                             <div class="row clearfix">
                                 <div class="col-lg-2 col-md-2 col-sm-4 col-xs-5 form-control-label">
@@ -173,6 +171,48 @@
                         <g:if test="${!task.id}">
                             Create a task first to post comments
                         </g:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Delete Task
+                </h2>
+            </div>
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="">
+                        <button class="btn btn-danger m-t-15 waves-effect" data-toggle="modal" data-target="#smallModal">
+                            <i class="material-icons">delete</i>
+                            <span>Delete Task</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal fade" id="smallModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="smallModalLabel">Delete Task</h4>
+                            </div>
+                            <div class="modal-body">
+                                Are You sure you want to delete this task
+                            </div>
+                            <div class="modal-footer">
+                                <g:form controller="task" action="deleteTask" >
+                                    <input type="hidden" name="taskId" value="${task.id}" />
+                                    <input type="hidden" name="projectId" value="${task.project}" />
+                                <button type="submit" class="btn btn-link waves-effect" >Delete Task</button>
+                                </g:form>
+                                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

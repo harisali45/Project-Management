@@ -52,6 +52,31 @@
 </div>
 </div>
 
+%{--<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    Upload Image
+                </h2>
+            </div>
+            <div class="body">
+                <form action="/" id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                    <div class="dz-message">
+                        <div class="drag-icon-cph">
+                            <i class="material-icons">touch_app</i>
+                        </div>
+                        <h3>Drop files here or click to upload.</h3>
+                    </div>
+                    <div class="fallback">
+                        <input name="file" type="file" multiple />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>--}%
+
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
@@ -69,8 +94,8 @@
                         <div class="col-lg-10 col-md-10 col-sm-8 col-xs-7">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="password" id="password"  name="password" class="form-control" placeholder="Enter Current Password"
-                                           value="${fieldValue(bean: user, field: 'password')}" required />
+                                    <input type="password" id="password"  name="password" class="form-control"
+                                           placeholder="Enter Current Password" required />
                                 </div>
                             </div>
                         </div>
@@ -83,7 +108,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="password" id="newPassword"  name="newPassword" class="form-control" placeholder="Enter New Password"
-                                           value="${fieldValue(bean: user, field: 'password')}" required />
+                                            required />
                                 </div>
                             </div>
                         </div>
@@ -96,7 +121,7 @@
                             <div class="form-group">
                                 <div class="form-line">
                                     <input type="password" id="confirmPassword"  name="confirmPassword" class="form-control" placeholder="Confirm Password"
-                                           value="${fieldValue(bean: user, field: 'confirmPassword')}" required />
+                                           required />
                                 </div>
                             </div>
                         </div>

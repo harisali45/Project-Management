@@ -14,6 +14,7 @@ class Task {
     Integer deleteFlag = 0
     String status = TaskStatusEnum.ONGOING
     Date deadline
+    boolean active = true
 
     static hasMany = [comment: Comment]
     static hasOne = [reportedBy: com.BackEnd.User, assignedTo: com.BackEnd.User, project: Project]

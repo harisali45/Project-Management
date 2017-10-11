@@ -18,7 +18,7 @@
     <div class="card">
         <div class="body">
            %{-- <g:form id="sign_in" method="POST" url="${g.createLink(controller: "login", action: "login")}">--}%
-                <g:form  method="POST" action="authenticate">
+                <form  method="POST" action="authenticate">
             <div class="msg">Sign in</div>
                 <div class="input-group">
                     <span class="input-group-addon">
@@ -56,10 +56,10 @@
                         <a href="${g.createLink(controller: "user", action: "showSignUp")}">Register Now!</a>
                     </div>
                     <div class="col-xs-6 align-right">
-                        <a href="/forgotPassword">Forgot Password?</a>
+                        <a href="${g.createLink(controller: "access", action: "showForgotPassword")}">Forgot Password?</a>
                     </div>
                 </div>
-            </g:form>
+            </form>
         </div>
     </div>
 </div>

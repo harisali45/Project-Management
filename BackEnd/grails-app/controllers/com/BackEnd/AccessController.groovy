@@ -10,34 +10,6 @@ class AccessController {
 
     def emailService
 
-    /*def login(){
-
-        String username = params.username
-        String password = params.password
-        User user = User.findByUsername(username)
-        ResponseMessage response = new ResponseMessage();
-
-        try {
-            if (!user)
-                throw FailedLoginException
-
-            if (user.password != password)
-                throw FailedLoginException
-
-            response.success = true
-
-        } catch (FailedLoginException) {
-
-            response.message = g.message(code: "user.login.failed")
-            response.success = false
-
-        }
-
-        Map model = [result: response, user: user]
-        render model as JSON
-
-    }*/
-
     def forgotPassword() {
         ResponseMessage response = new ResponseMessage()
 

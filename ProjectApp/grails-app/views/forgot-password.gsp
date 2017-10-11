@@ -18,7 +18,7 @@
         </div>
         <div class="card">
             <div class="body">
-                <g:form id="forgot_password" url="${g.createLink(controller: 'login', action: 'forgotPassword')}">
+                <g:form id="forgot_password" url="${g.createLink(controller: 'access', action: 'forgotPassword')}">
                     <div class="msg">
                         Enter your email address that you used to register. We'll send you an email with your username and a
                         link to reset your password.
@@ -52,7 +52,7 @@
                     </g:hasErrors>
 
                     <div class="row m-t-20 m-b--5 align-center">
-                        <a href="/login">Sign In!</a>
+                        <a href="/">Sign In!</a>
                     </div>
                 </g:form>
             </div>

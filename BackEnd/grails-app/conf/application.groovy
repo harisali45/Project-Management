@@ -17,6 +17,11 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	[pattern: '/**/images/**',   access: ['permitAll']],
 	[pattern: '/**/favicon.ico', access: ['permitAll']],
 
+	[pattern: '/access/**', access: ['permitAll'], httpMethod: 'GET'],
+	[pattern: '/access/**', access: ['permitAll'], httpMethod: 'POST'],
+	[pattern: '/access/**', access: ['permitAll'], httpMethod: 'PUT'],
+	[pattern: '/user/save', access: ['permitAll'], httpMethod: 'POST'],
+
 	//REST API URL's
 	[pattern: '/api/login',		 access: ['ROLE_ANONYMOUS']],
 	[pattern: '/oauth/access_token', access: ['ROLE_ANONYMOUS']],
@@ -34,22 +39,14 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	[pattern: '/notification/**', access: ['isAuthenticated()'], httpMethod: 'POST'],
 	[pattern: '/notification/**', access: ['isAuthenticated()'], httpMethod: 'GET'],
 
-	[pattern: '/user/updateDetails', access: ['permitAll'], httpMethod: 'POST'],
 	[pattern: '/user/**', access: ['isAuthenticated()'], httpMethod: 'GET'],
-	[pattern: '/user/**', access: ['isAuthenticated()'], httpMethod: 'POST'],
-
-	[pattern: '/access/**', access: ['permitAll'], httpMethod: 'GET'],
-	[pattern: '/access/**', access: ['permitAll'], httpMethod: 'POST']
+	[pattern: '/user/**', access: ['isAuthenticated()'], httpMethod: 'POST']
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [
 	[pattern: '/api/**',filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter'],
+	[pattern: '/access/forgotPassword', filters: 'JOINED_FILTERS'],
+	[pattern: '/user/save', filters: 'JOINED_FILTERS'],
 	[pattern: '/**', filters: 'JOINED_FILTERS,-anonymousAuthenticationFilter,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-rememberMeAuthenticationFilter']
-	/*[pattern: '/assets/**',      filters: 'none'],
-	[pattern: '/** /js/**',       filters: 'none'],
-	[pattern: '/** /css/**',      filters: 'none'],
-	[pattern: '/** /images/**',   filters: 'none'],
-	[pattern: '/** /favicon.ico', filters: 'none'],
-	[pattern: '/**',             filters: 'JOINED_FILTERS']*/
 ]
 

@@ -16,13 +16,6 @@ grails:
             events: false
     databinding:
         dateFormats: ["dd/MM/yyyy","EEE MMM dd HH:mm:ss z yyyy"]
-#    plugin:
-#      springsecurity:
-#        rest:
-#          login:
-#            useJsonCredentials: true
-#            usernamePropertyName: true
-#            passwordPropertyName: true
 info:
     app:
         name: '@info.app.name@'
@@ -164,3 +157,11 @@ grails:
             mail.smtp.socketFactory.fallback: false
 server:
     port: 8002
+---
+environments:
+    development:
+        taskLink: "/task/edit?taskId="
+        taskIcon: build
+        commentIcon: comment
+        projectLink: "/project/edit?projectId="
+        projectIcon: person_add

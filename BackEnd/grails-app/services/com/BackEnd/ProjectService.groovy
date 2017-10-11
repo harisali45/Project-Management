@@ -1,7 +1,9 @@
 package com.BackEnd
 
 import grails.converters.JSON
+import grails.core.GrailsApplication
 import grails.transaction.Transactional
+import grails.util.Holders
 
 @Transactional
 class ProjectService {
@@ -32,7 +34,7 @@ class ProjectService {
             result.message = errorService.getErrorMsg(projectUser)
         } else {
             result.success = true
-            notificationService.addNotification(project, "User ${user.name} has been added to ${project.title}")
+            notificationService.addNotification(project, "User ${user.name} has been added to ${project.title}", "${Holders.config.projectLink}${project.id}", Holders.config.projectIcon)
         }
         Map model = [result: result]
         model

@@ -71,7 +71,7 @@
             <a class="navbar-brand" >PROJECT MANAGEMENT</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
+            <li >
                 <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"
                    aria-expanded="true">
                     <i class="material-icons">notifications</i>
@@ -83,11 +83,13 @@
                         <ul class="menu">
                             <g:each in="${session.notifications}" var="notification" >
                                 <li>
-                                    <a href="javascript:void(0);">
-                                        <div class="icon-circle bg-light-green">
-                                            <i class="material-icons">person_add</i>
+                                    <a href="${notification.link}">
+                                        <div class="col-md-2">
+                                        <div class="icon-circle bg-light-green ">
+                                            <i class="material-icons">${notification.icon}</i>
                                         </div>
-                                        <div class="menu-info">
+                                        </div>
+                                        <div class="menu-info col-md-10">
                                             <h4>${notification?.message}</h4>
                                         </div>
                                     </a>
@@ -105,7 +107,7 @@
                 <ul class="dropdown-menu">
                     <li class="body">
                         <a href="${g.createLink(controller: 'user', action: 'show')}"><i class="material-icons">account_circle</i> Profile</a>
-                        <a href="${g.createLink(controller: 'login', action: 'logout')}"><i class="material-icons">power_settings_new</i> Logout</a>
+                        <a href="/logout"><i class="material-icons">power_settings_new</i> Logout</a>
                     </li>
                 </ul>
             </li>
@@ -166,36 +168,6 @@
         <g:layoutBody/>
     </div>
 </section>
-    %{--<div class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/#">
-                    <i class="fa grails-icon">
-                        <asset:image src="grails-cupsonly-logo-white.svg"/>
-                    </i> Grails
-                </a>
-            </div>
-            <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
-                <ul class="nav navbar-nav navbar-right">
-                    <g:pageProperty name="page.nav" />
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <g:layoutBody/>
-
-    <div class="footer" role="contentinfo"></div>
-
-    <div id="spinner" class="spinner" style="display:none;">
-        <g:message code="spinner.alt" default="Loading&hellip;"/>
-    </div>--}%
 
     <asset:javascript src="jquery.min.js" />
     <asset:javascript src="bootstrap.js" />
@@ -230,6 +202,12 @@
         weekStart: 1,
         time: false
     });
+    /*document.onready = function () {
+        document.querySelectorAll("input[required]").forEach(function (e) {
+            //e.required = true;
+            e.setCustomValidity('');
+        });
+    };*/
 </script>
 </body>
 </html>

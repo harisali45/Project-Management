@@ -34,7 +34,7 @@
                     <g:each in="${tasks}" var="task">
                     <li class="list-group-item ">${task.title}
                         <div class="float-right keep-up">
-                            <g:if test="${ task.deadline && task.deadline < new Date() }">
+                            <g:if test="${ task.status=="ONGOING" && task.deadline && task.deadline < new Date() }">
                                 <a class="btn btn-danger btn-xs" href="">
                                     <i class="material-icons">error_outline</i>
                                 </a>
@@ -44,6 +44,11 @@
                         </a>
                         </div>
                     </g:each>
+                    <g:if test="${tasks.size()==0}">
+                        <ul class="list-group">
+                            <li class="list-group-item ">No tasks in this project</li>
+                        </ul>
+                    </g:if>
                 </ul>
             </div>
         </div>

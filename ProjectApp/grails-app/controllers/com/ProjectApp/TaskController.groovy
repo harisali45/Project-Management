@@ -116,4 +116,12 @@ class TaskController {
         }
         redirect action: "edit", params: [taskId: comment.task, comment: comment]
     }
+
+    def deleteTask(Integer taskId, Integer projectId) {
+        RestResponse resp = rest.get("${grailsApplication.config.backEnd}task/delete?id=${taskId}") {
+            header('Authorization',"Bearer ${session.accessToken}")
+        }
+        flash.message = g.message(code: "task.deleted")
+        redirect action: "list", params: [projectId: projectId]
+    }
 }

@@ -22,7 +22,7 @@ class GetObjectsService {
         user
     }
 
-    def getUserByUsername(String username, String password ) {
+    def getUserByUsername(String username) {
 
         RestResponse resp = rest.get("${Holders.config.backEnd}user/getUserByUsername?username=${username}") {
             header('Authorization', "Bearer ${WebUtils.retrieveGrailsWebRequest().session.accessToken}")
